@@ -1,0 +1,29 @@
+{
+  "name": "allotr-graphql-schema-types",
+  "version": "0.0.1",
+  "description": "",
+  "types": "./lib/graphql.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate": "graphql-codegen --config codegen.yml"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "graphql": "^15.5.1",
+    "mongodb": "^4.1.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "2.1.1",
+    "@graphql-codegen/visitor-plugin-common": "^2.1.0",
+    "@graphql-codegen/typescript-operations": "2.1.0",
+    "@graphql-codegen/typescript-graphql-files-modules": "2.1.0",
+    "@graphql-codegen/typescript-resolvers": "2.1.0",
+    "@graphql-codegen/typescript-react-apollo": "3.1.0",
+    "@graphql-codegen/typescript": "2.1.0"
+  },
+  "files": [
+    "lib/**/*", "src/documents/*", "src/schemas/*"
+  ]
+}

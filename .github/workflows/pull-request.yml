@@ -1,0 +1,20 @@
+name: pull-request
+on: [pull_request]
+jobs:
+  eslint:
+    name: runner / eslint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js for use with actions
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - run: npm install
+      - run: npm run coverage
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run ESLint
+        uses: icrawl/action-eslint@v1
