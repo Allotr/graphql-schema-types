@@ -4,7 +4,7 @@
   "description": "",
   "types": "./lib/graphql.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 0",
     "generate": "graphql-codegen --config codegen.yml"
   },
   "keywords": [],
@@ -25,5 +25,9 @@
   },
   "files": [
     "lib/**/*", "src/documents/*", "src/schemas/*"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Allotr/graphql-schema-types.git"
+  }
 }
