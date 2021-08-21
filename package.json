@@ -1,12 +1,14 @@
 {
   "name": "allotr-graphql-schema-types",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
-  "main": "./lib/graphql.ts",
+  "main": "./lib/graphql.js",
   "types": "./lib/graphql.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
     "generate": "graphql-codegen --config codegen.yml",
+    "build": "tsc",
+    "prepare": "npm run build",
     "prepublishOnly": "npm run test",
     "preversion": "npm run test",
     "version": "git add -A src",
@@ -17,9 +19,11 @@
   "license": "ISC",
   "dependencies": {
     "graphql": "^15.5.1",
-    "mongodb": "^4.1.0"
+    "mongodb": "^4.1.0",
+    "@apollo/client": "^3.4.8"
   },
   "devDependencies": {
+    "typescript": "^4.3.5",
     "@graphql-codegen/cli": "2.1.1",
     "@graphql-codegen/visitor-plugin-common": "^2.1.0",
     "@graphql-codegen/typescript-operations": "2.1.0",
@@ -29,7 +33,9 @@
     "@graphql-codegen/typescript": "2.1.0"
   },
   "files": [
-    "lib/**/*", "src/documents/*", "src/schemas/*"
+    "lib/**/*",
+    "src/documents/*",
+    "src/schemas/*"
   ],
   "repository": {
     "type": "git",

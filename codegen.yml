@@ -2,13 +2,13 @@ overwrite: true
 schema: "src/schemas/*.graphql"
 documents: "src/documents/*.graphql"
 generates:
-  lib/generated/graphql.ts:
+  src/generated/graphql.ts:
     plugins:
     - "typescript"
     - "typescript-operations"
     - "typescript-resolvers"
     - "typescript-react-apollo"
-  lib/generated/graphql.d.ts:
+  src/generated/graphql.d.ts:
     plugins:
       - "typescript"
       - "typescript-operations"
