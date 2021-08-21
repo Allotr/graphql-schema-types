@@ -1,5 +1,4 @@
 import { GraphQLResolveInfo } from 'graphql';
-import * as Apollo from '@apollo/client';
 export declare type Maybe<T> = T | null;
 export declare type Exact<T extends {
     [key: string]: unknown;
@@ -133,28 +132,4 @@ export declare type Resolvers<ContextType = any> = {
     Result?: ResultResolvers<ContextType>;
     Subscription?: SubscriptionResolvers<ContextType>;
 };
-export declare const LoginDocument: Apollo.DocumentNode;
-/**
- * __useLoginQuery__
- *
- * To run a query within a React component, call `useLoginQuery` and pass it any options that fit your needs.
- * When your component renders, `useLoginQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useLoginQuery({
- *   variables: {
- *   },
- * });
- */
-export declare function useLoginQuery(baseOptions?: Apollo.QueryHookOptions<LoginQuery, LoginQueryVariables>): Apollo.QueryResult<LoginQuery, Exact<{
-    [key: string]: never;
-}>>;
-export declare function useLoginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LoginQuery, LoginQueryVariables>): Apollo.QueryTuple<LoginQuery, Exact<{
-    [key: string]: never;
-}>>;
-export declare type LoginQueryHookResult = ReturnType<typeof useLoginQuery>;
-export declare type LoginLazyQueryHookResult = ReturnType<typeof useLoginLazyQuery>;
-export declare type LoginQueryResult = Apollo.QueryResult<LoginQuery, LoginQueryVariables>;
+//# sourceMappingURL=graphql.d.ts.map
