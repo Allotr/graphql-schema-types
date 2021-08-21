@@ -29,7 +29,6 @@
     "@graphql-codegen/typescript-graphql-files-modules": "2.1.0",
     "@graphql-codegen/typescript-operations": "2.1.0",
     "@graphql-codegen/typescript-resolvers": "2.1.0",
-    "@graphql-codegen/visitor-plugin-common": "^2.1.0",
     "typescript": "^4.3.5"
   },
   "files": [

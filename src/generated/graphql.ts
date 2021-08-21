@@ -68,7 +68,7 @@ export type OauthIds = {
 export type Query = {
   __typename?: 'Query';
   login: AuthenticateResponse;
-  results: Array<Maybe<Result>>;
+  results: Array<Result>;
 };
 
 
@@ -328,7 +328,7 @@ export type OauthIdsResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   login?: Resolver<ResolversTypes['AuthenticateResponse'], ParentType, ContextType, RequireFields<QueryLoginArgs, 'email' | 'password'>>;
-  results?: Resolver<Array<Maybe<ResolversTypes['Result']>>, ParentType, ContextType>;
+  results?: Resolver<Array<ResolversTypes['Result']>, ParentType, ContextType>;
 };
 
 export type ResourceResolvers<ContextType = any, ParentType extends ResolversParentTypes['Resource'] = ResolversParentTypes['Resource']> = {
