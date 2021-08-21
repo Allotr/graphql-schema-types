@@ -2,10 +2,16 @@ overwrite: true
 schema: "src/schemas/*.graphql"
 documents: "src/documents/*.graphql"
 generates:
-  lib/generated/graphql.d.ts:
+  lib/generated/graphql.ts:
     plugins:
     - "typescript"
     - "typescript-operations"
     - "typescript-resolvers"
     - "typescript-react-apollo"
-    - "typescript-graphql-files-modules"
+  lib/generated/graphql.d.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-resolvers"
+      - "typescript-react-apollo"
+      - "typescript-graphql-files-modules"
