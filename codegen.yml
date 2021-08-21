@@ -3,13 +3,12 @@ schema: "src/schemas/*.graphql"
 documents: "src/documents/*.graphql"
 generates:
   src/generated/graphql.ts:
+    config:
+      objectIdType: ObjectId#mongodb
+      scalars:
+        Date: Date
     plugins:
     - "typescript"
     - "typescript-operations"
     - "typescript-resolvers"
-  # src/generated/graphql.d.ts:
-  #   plugins:
-  #     - "typescript"
-  #     - "typescript-operations"
-  #     - "typescript-resolvers"
-  #     - "typescript-graphql-files-modules"
+    - "typescript-mongodb"

@@ -19,3 +19,67 @@ type Result {
 type AuthenticateResponse {
     token: String!
 }
+# End of placeholder code
+
+type Resource @entity {
+    id: String @id
+    name: String! @column,
+    description: String @column,
+    maxActiveTickets: Int! @column,
+    creationDate: Date! @column,
+    lastModificationDate: Date! @column,
+    tickets: [Ticket!]! @embedded
+    createdBy: BasicUserInfo @embedded
+}
+
+type Ticket @entity(embedded: true) {
+    ticketId: String @id,
+    creationDate: Date! @column,
+    user: TicketUserInfo! @embedded
+    statuses: [TicketStatus!]! @embedded
+}
+
+type TicketStatus @entity(embedded: true){
+    timestamp: Date! @column
+    statusCode: TicketStatusCode! @column
+}
+
+type BasicUserInfo @entity(embedded: true){
+    userId: String @id,
+    username: String! @column
+}
+
+type TicketUserInfo @entity(embedded: true){
+    userId: String @id,
+    username: String! @column
+    role: LocalRole! @column
+}
+
+type OauthIds @entity(embedded: true) {
+    googleId: String @column
+}
+
+type UserPreferences @entity(embedded: true) {
+    deleteAllPlans: Boolean
+}
+
+
+enum GlobalRole {
+    ADMIN,
+    USER
+}
+
+enum LocalRole {
+    ADMIN,
+    USER
+}
+
+enum TicketStatusCode {
+    INITIALIZED,
+    REQUESTING,
+    QUEUED,
+    AWAITING_CONFIRMATION,
+    ACTIVE,
+    INACTIVE,
+    REVOKED
+}
