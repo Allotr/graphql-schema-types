@@ -7,11 +7,9 @@ generates:
     - "typescript"
     - "typescript-operations"
     - "typescript-resolvers"
-    - "typescript-react-apollo"
-  src/generated/graphql.d.ts:
-    plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-resolvers"
-      - "typescript-react-apollo"
-      - "typescript-graphql-files-modules"
+  # src/generated/graphql.d.ts:
+  #   plugins:
+  #     - "typescript"
+  #     - "typescript-operations"
+  #     - "typescript-resolvers"
+  #     - "typescript-graphql-files-modules"
