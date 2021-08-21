@@ -1,7 +1,10 @@
 # This is placeholder code
 
+scalar Date
+
 type Query {
     login(email: String!, password: String!): AuthenticateResponse!
+    results: [Result!]!
 }
 
 type Mutation {
@@ -12,10 +15,45 @@ type Subscription {
     newUpdate: Result
 }
 
-type Result {
-    result: String
-}
 
 type AuthenticateResponse {
-    token: String!
+    token: String
+}
+
+type Result @entity {
+    id: Int! @column
+    result: String! @column
+}
+
+# End of placeholder code
+
+
+type User @entity {
+    id: String @id
+    globalRole: GlobalRole @column
+    username: String! @column
+    name: String @column
+    surname: String @column
+    creationDate: Date @column
+    userPreferences: UserPreferences @embedded
+    oauthIds: OauthIds @embedded
+}
+
+type OauthIds @entity(embedded: true) {
+    googleId: String @column
+}
+
+type UserPreferences @entity(embedded: true) {
+    deleteAllPlans: Boolean
+}
+
+
+enum GlobalRole {
+    ADMIN,
+    USER
+}
+
+enum LocalRole {
+    ADMIN,
+    USER
 }
