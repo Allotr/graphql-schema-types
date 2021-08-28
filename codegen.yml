@@ -12,3 +12,5 @@ generates:
     - "typescript-operations"
     - "typescript-resolvers"
     - "typescript-mongodb"
+    # - "typescript-react-apollo"
+    - "typescript-document-nodes"

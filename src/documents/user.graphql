@@ -1,5 +1,17 @@
-query login{
-    login(email: "test", password: "test"){
+query login($email: String!, $password: String!){
+    login(email: $email, password: $password){
         token
+    }
+}
+
+query currentUser{
+    currentUser{
+        _id
+        username
+        globalRole
+        username
+        name
+        surname
+        creationDate
     }
 }

@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -67,6 +68,7 @@ export type OauthIds = {
 
 export type Query = {
   __typename?: 'Query';
+  currentUser?: Maybe<User>;
   login: AuthenticateResponse;
   results: Array<Result>;
 };
@@ -133,7 +135,7 @@ export type TicketUserInfo = {
 
 export type User = {
   __typename?: 'User';
-  id?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['String']>;
   globalRole?: Maybe<GlobalRole>;
   username: Scalars['String'];
   name?: Maybe<Scalars['String']>;
@@ -141,6 +143,7 @@ export type User = {
   creationDate?: Maybe<Scalars['Date']>;
   userPreferences?: Maybe<UserPreferences>;
   oauthIds?: Maybe<OauthIds>;
+  pushURLs: Array<Maybe<Scalars['String']>>;
 };
 
 export type UserPreferences = {
@@ -148,10 +151,18 @@ export type UserPreferences = {
   deleteAllPlans?: Maybe<Scalars['Boolean']>;
 };
 
-export type LoginQueryVariables = Exact<{ [key: string]: never; }>;
+export type LoginQueryVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
 
 
 export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'AuthenticateResponse', token: string } };
+
+export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentUserQuery = { __typename?: 'Query', currentUser?: Maybe<{ __typename?: 'User', _id?: Maybe<string>, username: string, globalRole?: Maybe<GlobalRole>, name?: Maybe<string>, surname?: Maybe<string>, creationDate?: Maybe<Date> }> };
 
 
 
@@ -327,6 +338,7 @@ export type OauthIdsResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   login?: Resolver<ResolversTypes['AuthenticateResponse'], ParentType, ContextType, RequireFields<QueryLoginArgs, 'email' | 'password'>>;
   results?: Resolver<Array<ResolversTypes['Result']>, ParentType, ContextType>;
 };
@@ -375,7 +387,7 @@ export type TicketUserInfoResolvers<ContextType = any, ParentType extends Resolv
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  _id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   globalRole?: Resolver<Maybe<ResolversTypes['GlobalRole']>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -383,6 +395,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   creationDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   userPreferences?: Resolver<Maybe<ResolversTypes['UserPreferences']>, ParentType, ContextType>;
   oauthIds?: Resolver<Maybe<ResolversTypes['OauthIds']>, ParentType, ContextType>;
+  pushURLs?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -472,6 +485,29 @@ export type UserDbObject = {
   creationDate?: Maybe<Date>,
   userPreferences?: Maybe<UserPreferencesDbObject>,
   oauthIds?: Maybe<OauthIdsDbObject>,
+  pushURLs: Array<Maybe<string>>,
 };
 
 export type UserPreferencesDbObject = {};
+
+
+export const Login = gql`
+    query login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    token
+  }
+}
+    `;
+export const CurrentUser = gql`
+    query currentUser {
+  currentUser {
+    _id
+    username
+    globalRole
+    username
+    name
+    surname
+    creationDate
+  }
+}
+    `;
