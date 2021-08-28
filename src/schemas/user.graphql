@@ -3,8 +3,11 @@
 scalar Date
 
 type Query {
+    # Placeholder
     login(email: String!, password: String!): AuthenticateResponse!
     results: [Result!]!
+    # Real things
+    currentUser: User
 }
 
 type Mutation {
@@ -29,7 +32,7 @@ type Result @entity {
 
 
 type User @entity {
-    id: String @id
+    _id: String @id
     globalRole: GlobalRole @column
     username: String! @column
     name: String @column

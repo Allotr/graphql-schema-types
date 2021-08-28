@@ -1,5 +1,0 @@
-query login{
-    login(email: "test", password: "test"){
-        token
-    }
-}
