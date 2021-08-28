@@ -6,7 +6,12 @@ query login($email: String!, $password: String!){
 
 query currentUser{
     currentUser{
-        _id,
+        _id
         username
+        globalRole
+        username
+        name
+        surname
+        creationDate
     }
 }

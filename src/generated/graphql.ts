@@ -143,6 +143,7 @@ export type User = {
   creationDate?: Maybe<Scalars['Date']>;
   userPreferences?: Maybe<UserPreferences>;
   oauthIds?: Maybe<OauthIds>;
+  pushURLs: Array<Maybe<Scalars['String']>>;
 };
 
 export type UserPreferences = {
@@ -161,7 +162,7 @@ export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'Authenti
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'Query', currentUser?: Maybe<{ __typename?: 'User', _id?: Maybe<string>, username: string }> };
+export type CurrentUserQuery = { __typename?: 'Query', currentUser?: Maybe<{ __typename?: 'User', _id?: Maybe<string>, username: string, globalRole?: Maybe<GlobalRole>, name?: Maybe<string>, surname?: Maybe<string>, creationDate?: Maybe<Date> }> };
 
 
 
@@ -394,6 +395,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   creationDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   userPreferences?: Resolver<Maybe<ResolversTypes['UserPreferences']>, ParentType, ContextType>;
   oauthIds?: Resolver<Maybe<ResolversTypes['OauthIds']>, ParentType, ContextType>;
+  pushURLs?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -483,6 +485,7 @@ export type UserDbObject = {
   creationDate?: Maybe<Date>,
   userPreferences?: Maybe<UserPreferencesDbObject>,
   oauthIds?: Maybe<OauthIdsDbObject>,
+  pushURLs: Array<Maybe<string>>,
 };
 
 export type UserPreferencesDbObject = {};
@@ -500,6 +503,11 @@ export const CurrentUser = gql`
   currentUser {
     _id
     username
+    globalRole
+    username
+    name
+    surname
+    creationDate
   }
 }
     `;
