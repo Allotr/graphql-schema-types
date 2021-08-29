@@ -4,6 +4,15 @@ query login($email: String!, $password: String!){
     }
 }
 
+query searchUsers($query: String){
+    searchUsers(query: $query){
+        id
+        username
+        name
+        surname
+    }
+}
+
 query currentUser{
     currentUser{
         _id

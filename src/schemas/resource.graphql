@@ -1,8 +1,4 @@
 # This is placeholder code
-type Mutation {
-    register(email: String!, password: String!): AuthenticateResponse!
-}
-
 type Subscription {
     newUpdate: Result
 }
@@ -16,6 +12,59 @@ type AuthenticateResponse {
 }
 # End of placeholder code
 
+type Query {
+    myResources: [ResourceCard!]!
+}
+
+type ResourceCard {
+    resourceId: String!
+    activeUserCount:Int!
+    maxActiveTickets: Int!
+    creationDate: Date!
+    createdBy: BasicUserInfo
+    lastModificationDate: Date!
+    name: String!
+    description: String
+    ticketId: String,
+    statusCode: TicketStatusCode!
+    lastStatusTimestamp: Date!
+    role: LocalRole!
+}
+
+type Mutation {
+    createResource(resource: InputResource!): CreationResult!
+}
+
+type CreationResult {
+    status: OperationResult!,
+    errorCode: ErrorCode
+    errorMessage: String
+    newObjectId: String
+}
+
+enum ErrorCode {
+    BAD_DATA,
+    BAD_CONNECTION
+}
+
+enum OperationResult {
+    OK,
+    ERROR
+}
+
+input InputResource {
+    name: String!
+    description: String
+    maxActiveTickets: Int!
+    userList: [ResourceUser!]!
+}
+
+input ResourceUser {
+    id: String!
+    role: LocalRole!
+}
+
+
 type Resource @entity {
     id: String @id
     name: String! @column,
@@ -25,6 +74,7 @@ type Resource @entity {
     lastModificationDate: Date! @column,
     tickets: [Ticket!]! @embedded
     createdBy: BasicUserInfo @embedded
+    activeUserCount: Int! @column
 }
 
 type Ticket @entity(embedded: true) {
@@ -59,14 +109,10 @@ type UserPreferences @entity(embedded: true) {
 }
 
 
-enum GlobalRole {
-    ADMIN,
-    USER
-}
 
 enum LocalRole {
-    ADMIN,
-    USER
+    RESOURCE_ADMIN,
+    RESOURCE_USER
 }
 
 enum TicketStatusCode {

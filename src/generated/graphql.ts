@@ -39,20 +39,46 @@ export type BasicUserInfo = {
   username: Scalars['String'];
 };
 
+export type CreationResult = {
+  __typename?: 'CreationResult';
+  status: OperationResult;
+  errorCode?: Maybe<ErrorCode>;
+  errorMessage?: Maybe<Scalars['String']>;
+  newObjectId?: Maybe<Scalars['String']>;
+};
+
+
+export enum ErrorCode {
+  BadData = 'BAD_DATA',
+  BadConnection = 'BAD_CONNECTION'
+}
 
 export enum GlobalRole {
   Admin = 'ADMIN',
   User = 'USER'
 }
 
+export type InputResource = {
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  maxActiveTickets: Scalars['Int'];
+  userList: Array<ResourceUser>;
+};
+
 export enum LocalRole {
-  Admin = 'ADMIN',
-  User = 'USER'
+  ResourceAdmin = 'RESOURCE_ADMIN',
+  ResourceUser = 'RESOURCE_USER'
 }
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createResource: CreationResult;
   register: AuthenticateResponse;
+};
+
+
+export type MutationCreateResourceArgs = {
+  resource: InputResource;
 };
 
 
@@ -66,17 +92,37 @@ export type OauthIds = {
   googleId?: Maybe<Scalars['String']>;
 };
 
+export enum OperationResult {
+  Ok = 'OK',
+  Error = 'ERROR'
+}
+
+export type PublicUser = {
+  __typename?: 'PublicUser';
+  id?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  surname?: Maybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
-  login: AuthenticateResponse;
-  results: Array<Result>;
   currentUser?: Maybe<User>;
+  login: AuthenticateResponse;
+  myResources: Array<ResourceCard>;
+  results: Array<Result>;
+  searchUsers: Array<PublicUser>;
 };
 
 
 export type QueryLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+
+export type QuerySearchUsersArgs = {
+  query?: Maybe<Scalars['String']>;
 };
 
 export type Resource = {
@@ -89,6 +135,28 @@ export type Resource = {
   lastModificationDate: Scalars['Date'];
   tickets: Array<Ticket>;
   createdBy?: Maybe<BasicUserInfo>;
+  activeUserCount: Scalars['Int'];
+};
+
+export type ResourceCard = {
+  __typename?: 'ResourceCard';
+  resourceId: Scalars['String'];
+  activeUserCount: Scalars['Int'];
+  maxActiveTickets: Scalars['Int'];
+  creationDate: Scalars['Date'];
+  createdBy?: Maybe<BasicUserInfo>;
+  lastModificationDate: Scalars['Date'];
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  ticketId?: Maybe<Scalars['String']>;
+  statusCode: TicketStatusCode;
+  lastStatusTimestamp: Scalars['Date'];
+  role: LocalRole;
+};
+
+export type ResourceUser = {
+  id: Scalars['String'];
+  role: LocalRole;
 };
 
 export type Result = {
@@ -151,6 +219,18 @@ export type UserPreferences = {
   deleteAllPlans?: Maybe<Scalars['Boolean']>;
 };
 
+export type MyResourcesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyResourcesQuery = { __typename?: 'Query', myResources: Array<{ __typename?: 'ResourceCard', resourceId: string, activeUserCount: number, maxActiveTickets: number, creationDate: Date, lastModificationDate: Date, name: string, description?: Maybe<string>, ticketId?: Maybe<string>, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }> };
+
+export type CreateResourceMutationVariables = Exact<{
+  resource: InputResource;
+}>;
+
+
+export type CreateResourceMutation = { __typename?: 'Mutation', createResource: { __typename?: 'CreationResult', status: OperationResult, newObjectId?: Maybe<string> } };
+
 export type LoginQueryVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -158,6 +238,13 @@ export type LoginQueryVariables = Exact<{
 
 
 export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'AuthenticateResponse', token: string } };
+
+export type SearchUsersQueryVariables = Exact<{
+  query?: Maybe<Scalars['String']>;
+}>;
+
+
+export type SearchUsersQuery = { __typename?: 'Query', searchUsers: Array<{ __typename?: 'PublicUser', id?: Maybe<string>, username?: Maybe<string>, name?: Maybe<string>, surname?: Maybe<string> }> };
 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -237,14 +324,21 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   AuthenticateResponse: ResolverTypeWrapper<AuthenticateResponse>;
   BasicUserInfo: ResolverTypeWrapper<BasicUserInfo>;
+  CreationResult: ResolverTypeWrapper<CreationResult>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
+  ErrorCode: ErrorCode;
   GlobalRole: GlobalRole;
+  InputResource: InputResource;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   LocalRole: LocalRole;
   Mutation: ResolverTypeWrapper<{}>;
   OauthIds: ResolverTypeWrapper<OauthIds>;
+  OperationResult: OperationResult;
+  PublicUser: ResolverTypeWrapper<PublicUser>;
   Query: ResolverTypeWrapper<{}>;
   Resource: ResolverTypeWrapper<Resource>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
+  ResourceCard: ResolverTypeWrapper<ResourceCard>;
+  ResourceUser: ResourceUser;
   Result: ResolverTypeWrapper<Result>;
   Subscription: ResolverTypeWrapper<{}>;
   Ticket: ResolverTypeWrapper<Ticket>;
@@ -262,12 +356,17 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   AuthenticateResponse: AuthenticateResponse;
   BasicUserInfo: BasicUserInfo;
+  CreationResult: CreationResult;
   Date: Scalars['Date'];
+  InputResource: InputResource;
+  Int: Scalars['Int'];
   Mutation: {};
   OauthIds: OauthIds;
+  PublicUser: PublicUser;
   Query: {};
   Resource: Resource;
-  Int: Scalars['Int'];
+  ResourceCard: ResourceCard;
+  ResourceUser: ResourceUser;
   Result: Result;
   Subscription: {};
   Ticket: Ticket;
@@ -324,11 +423,20 @@ export type BasicUserInfoResolvers<ContextType = any, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CreationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreationResult'] = ResolversParentTypes['CreationResult']> = {
+  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
+  errorCode?: Resolver<Maybe<ResolversTypes['ErrorCode']>, ParentType, ContextType>;
+  errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  newObjectId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date';
 }
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createResource?: Resolver<ResolversTypes['CreationResult'], ParentType, ContextType, RequireFields<MutationCreateResourceArgs, 'resource'>>;
   register?: Resolver<ResolversTypes['AuthenticateResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password'>>;
 };
 
@@ -337,10 +445,20 @@ export type OauthIdsResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type PublicUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUser'] = ResolversParentTypes['PublicUser']> = {
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  surname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  login?: Resolver<ResolversTypes['AuthenticateResponse'], ParentType, ContextType, RequireFields<QueryLoginArgs, 'email' | 'password'>>;
-  results?: Resolver<Array<ResolversTypes['Result']>, ParentType, ContextType>;
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  login?: Resolver<ResolversTypes['AuthenticateResponse'], ParentType, ContextType, RequireFields<QueryLoginArgs, 'email' | 'password'>>;
+  myResources?: Resolver<Array<ResolversTypes['ResourceCard']>, ParentType, ContextType>;
+  results?: Resolver<Array<ResolversTypes['Result']>, ParentType, ContextType>;
+  searchUsers?: Resolver<Array<ResolversTypes['PublicUser']>, ParentType, ContextType, RequireFields<QuerySearchUsersArgs, never>>;
 };
 
 export type ResourceResolvers<ContextType = any, ParentType extends ResolversParentTypes['Resource'] = ResolversParentTypes['Resource']> = {
@@ -352,6 +470,23 @@ export type ResourceResolvers<ContextType = any, ParentType extends ResolversPar
   lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   tickets?: Resolver<Array<ResolversTypes['Ticket']>, ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
+  activeUserCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ResourceCardResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceCard'] = ResolversParentTypes['ResourceCard']> = {
+  resourceId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  activeUserCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
+  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  ticketId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  statusCode?: Resolver<ResolversTypes['TicketStatusCode'], ParentType, ContextType>;
+  lastStatusTimestamp?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -407,11 +542,14 @@ export type UserPreferencesResolvers<ContextType = any, ParentType extends Resol
 export type Resolvers<ContextType = any> = {
   AuthenticateResponse?: AuthenticateResponseResolvers<ContextType>;
   BasicUserInfo?: BasicUserInfoResolvers<ContextType>;
+  CreationResult?: CreationResultResolvers<ContextType>;
   Date?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   OauthIds?: OauthIdsResolvers<ContextType>;
+  PublicUser?: PublicUserResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Resource?: ResourceResolvers<ContextType>;
+  ResourceCard?: ResourceCardResolvers<ContextType>;
   Result?: ResultResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   Ticket?: TicketResolvers<ContextType>;
@@ -451,6 +589,7 @@ export type ResourceDbObject = {
   lastModificationDate: Date,
   tickets: Array<TicketDbObject>,
   createdBy?: Maybe<BasicUserInfoDbObject>,
+  activeUserCount: number,
 };
 
 export type ResultDbObject = {
@@ -491,10 +630,49 @@ export type UserDbObject = {
 export type UserPreferencesDbObject = {};
 
 
+export const MyResources = gql`
+    query myResources {
+  myResources {
+    resourceId
+    activeUserCount
+    maxActiveTickets
+    creationDate
+    createdBy {
+      userId
+      username
+    }
+    lastModificationDate
+    name
+    description
+    ticketId
+    statusCode
+    lastStatusTimestamp
+    role
+  }
+}
+    `;
+export const CreateResource = gql`
+    mutation createResource($resource: InputResource!) {
+  createResource(resource: $resource) {
+    status
+    newObjectId
+  }
+}
+    `;
 export const Login = gql`
     query login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
     token
+  }
+}
+    `;
+export const SearchUsers = gql`
+    query searchUsers($query: String) {
+  searchUsers(query: $query) {
+    id
+    username
+    name
+    surname
   }
 }
     `;
