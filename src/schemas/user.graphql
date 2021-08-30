@@ -8,6 +8,7 @@ type Query {
     results: [Result!]!
     # Real things
     currentUser: User
+    searchUsers(query: String): [PublicUser!]!
 }
 
 type Mutation {
@@ -29,6 +30,13 @@ type Result @entity {
 }
 
 # End of placeholder code
+
+type PublicUser {
+    id: String
+    username: String
+    name: String
+    surname: String
+}
 
 
 type User @entity {
@@ -53,11 +61,6 @@ type UserPreferences @entity(embedded: true) {
 
 
 enum GlobalRole {
-    ADMIN,
-    USER
-}
-
-enum LocalRole {
     ADMIN,
     USER
 }

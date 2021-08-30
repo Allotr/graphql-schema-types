@@ -1,5 +1,26 @@
-query login($email: String!, $password: String!){
-    login(email: $email, password: $password){
-        token
+query myResources{
+    myResources{
+        resourceId
+        activeUserCount
+        maxActiveTickets
+        creationDate
+        createdBy {
+            userId,
+            username
+        }
+        lastModificationDate
+        name
+        description
+        ticketId
+        statusCode
+        lastStatusTimestamp
+        role
+    }
+}
+
+mutation createResource($resource: InputResource!){
+    createResource(resource: $resource){
+        status
+        newObjectId
     }
 }
