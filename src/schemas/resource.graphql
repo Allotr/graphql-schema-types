@@ -1,126 +1,193 @@
-# This is placeholder code
-type Subscription {
-    newUpdate: Result
-}
-
-type Result {
-    result: String
-}
-
-type AuthenticateResponse {
-    token: String!
-}
-# End of placeholder code
-
+# Operations
 type Query {
-    myResources: [ResourceCard!]!
-}
-
-type ResourceCard {
-    resourceId: String!
-    activeUserCount:Int!
-    maxActiveTickets: Int!
-    creationDate: Date!
-    createdBy: BasicUserInfo
-    lastModificationDate: Date!
-    name: String!
-    description: String
-    ticketId: String,
-    statusCode: TicketStatusCode!
-    lastStatusTimestamp: Date!
-    role: LocalRole!
+  myResources: [ResourceCard!]!
+  viewResource(resourceId: String!): ResourceView
 }
 
 type Mutation {
-    createResource(resource: InputResource!): CreationResult!
+  createResource(resource: InputResource!): CreationResult!
+  updateResource(resource: InputResource!): UpdateResult!
+  deleteResource(resourceId: String!): DeletionResult!
+  requestResource(
+    resourceId: String!
+    requestFrom: RequestSource!
+  ): ResourceManagementResult!
+  releaseResource(
+    resourceId: String!
+    requestFrom: RequestSource!
+  ): ResourceManagementResult!
+  acquireResource(resourceId: String!): ResourceManagementResult!
+  cancelResourceAcquire(resourceId: String!): ResourceManagementResult!
+}
+
+type Subscription {
+  newResourceReady: ResourceUpdate
+  newResourceCreated: ResourceCard
+}
+
+# Types
+
+type ResourceUpdate {
+  id: String
+  name: String!
+  lastModificationDate: Date!
+  createdBy: BasicUserInfo
+}
+
+enum RequestSource {
+  HOME
+  RESOURCE
+}
+
+type ResourceView {
+  id: String
+  name: String!
+  description: String
+  maxActiveTickets: Int!
+  creationDate: Date!
+  lastModificationDate: Date!
+  tickets: [TicketView!]!
+  createdBy: BasicUserInfo
+  activeUserCount: Int!
+}
+
+type TicketView {
+  ticketId: String
+  creationDate: Date!
+  user: TicketViewUserInfo!
+  lastStatus: TicketStatus!
+}
+
+type TicketViewUserInfo {
+  userId: String @id
+  username: String! @column
+  name: String
+  surname: String
+  role: LocalRole! @column
+}
+
+type ResourceCard {
+  resourceId: String!
+  activeUserCount: Int!
+  maxActiveTickets: Int!
+  queuePosition: Int
+  creationDate: Date!
+  createdBy: BasicUserInfo
+  lastModificationDate: Date!
+  name: String!
+  description: String
+  ticketId: String
+  statusCode: TicketStatusCode!
+  lastStatusTimestamp: Date!
+  role: LocalRole!
+}
+
+type ResourceManagementResult {
+  status: OperationResult!
+  errorCode: ErrorCode
+  errorMessage: String
+  updatedResourceCard: ResourceCard
+  updatedResourceView: ResourceView
+}
+
+type DeletionResult {
+  status: OperationResult!
+  errorCode: ErrorCode
+  errorMessage: String
+}
+
+type UpdateResult {
+  status: OperationResult!
+  errorCode: ErrorCode
+  errorMessage: String
 }
 
 type CreationResult {
-    status: OperationResult!,
-    errorCode: ErrorCode
-    errorMessage: String
-    newObjectId: String
+  status: OperationResult!
+  errorCode: ErrorCode
+  errorMessage: String
+  newObjectId: String
 }
 
 enum ErrorCode {
-    BAD_DATA,
-    BAD_CONNECTION
+  BAD_DATA
+  BAD_CONNECTION
+  BAD_TRANSACTION
+  DATA_CHANGED_REFRESH
 }
 
 enum OperationResult {
-    OK,
-    ERROR
+  OK
+  ERROR
 }
 
 input InputResource {
-    name: String!
-    description: String
-    maxActiveTickets: Int!
-    userList: [ResourceUser!]!
+  name: String!
+  description: String
+  maxActiveTickets: Int!
+  userList: [ResourceUser!]!
 }
 
 input ResourceUser {
-    id: String!
-    role: LocalRole!
+  id: String!
+  role: LocalRole!
 }
 
-
 type Resource @entity {
-    id: String @id
-    name: String! @column,
-    description: String @column,
-    maxActiveTickets: Int! @column,
-    creationDate: Date! @column,
-    lastModificationDate: Date! @column,
-    tickets: [Ticket!]! @embedded
-    createdBy: BasicUserInfo @embedded
-    activeUserCount: Int! @column
+  id: String @id
+  name: String! @column
+  description: String @column
+  maxActiveTickets: Int! @column
+  creationDate: Date! @column
+  lastModificationDate: Date! @column
+  tickets: [Ticket!]! @embedded
+  createdBy: BasicUserInfo @embedded
+  activeUserCount: Int! @column
 }
 
 type Ticket @entity(embedded: true) {
-    ticketId: String @id,
-    creationDate: Date! @column,
-    user: TicketUserInfo! @embedded
-    statuses: [TicketStatus!]! @embedded
+  ticketId: String @id
+  creationDate: Date! @column
+  user: TicketUserInfo! @embedded
+  statuses: [TicketStatus!]! @embedded
 }
 
-type TicketStatus @entity(embedded: true){
-    timestamp: Date! @column
-    statusCode: TicketStatusCode! @column
+type TicketStatus @entity(embedded: true) {
+  timestamp: Date! @column
+  statusCode: TicketStatusCode! @column
+  queuePosition: Int @column
 }
 
-type BasicUserInfo @entity(embedded: true){
-    userId: String @id,
-    username: String! @column
+type BasicUserInfo @entity(embedded: true) {
+  userId: String @id
+  username: String! @column
 }
 
-type TicketUserInfo @entity(embedded: true){
-    userId: String @id,
-    username: String! @column
-    role: LocalRole! @column
+type TicketUserInfo @entity(embedded: true) {
+  userId: String @id
+  username: String! @column
+  role: LocalRole! @column
 }
 
 type OauthIds @entity(embedded: true) {
-    googleId: String @column
+  googleId: String @column
 }
 
 type UserPreferences @entity(embedded: true) {
-    deleteAllPlans: Boolean
+  deleteAllPlans: Boolean
 }
 
-
-
 enum LocalRole {
-    RESOURCE_ADMIN,
-    RESOURCE_USER
+  RESOURCE_ADMIN
+  RESOURCE_USER
 }
 
 enum TicketStatusCode {
-    INITIALIZED,
-    REQUESTING,
-    QUEUED,
-    AWAITING_CONFIRMATION,
-    ACTIVE,
-    INACTIVE,
-    REVOKED
+  INITIALIZED
+  REQUESTING
+  QUEUED
+  AWAITING_CONFIRMATION
+  ACTIVE
+  INACTIVE
+  REVOKED
 }

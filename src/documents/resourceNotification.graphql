@@ -1,0 +1,21 @@
+query myNotificationData {
+  myNotificationData {
+    id
+    titleRef
+    descriptionRef
+    user {
+      userId
+      username
+    }
+    resource {
+      id
+      name
+      createdBy {
+          userId
+          username
+      }
+    }
+    ticketStatus
+    timestamp
+  }
+}

@@ -1,26 +1,328 @@
-query myResources{
-    myResources{
-        resourceId
-        activeUserCount
-        maxActiveTickets
-        creationDate
-        createdBy {
-            userId,
-            username
-        }
-        lastModificationDate
-        name
-        description
-        ticketId
-        statusCode
-        lastStatusTimestamp
-        role
+query myResources {
+  myResources {
+    resourceId
+    activeUserCount
+    maxActiveTickets
+    queuePosition
+    creationDate
+    createdBy {
+      userId
+      username
     }
+    lastModificationDate
+    name
+    description
+    ticketId
+    statusCode
+    lastStatusTimestamp
+    role
+  }
 }
 
-mutation createResource($resource: InputResource!){
-    createResource(resource: $resource){
-        status
-        newObjectId
+query viewResource($resourceId: String!) {
+  viewResource(resourceId: $resourceId) {
+    id
+    name
+    description
+    maxActiveTickets
+    creationDate
+    lastModificationDate
+    tickets {
+      ticketId
+      creationDate
+      user {
+        userId
+        username
+        role
+      }
+      lastStatus {
+        timestamp
+        statusCode
+        queuePosition
+      }
     }
+    createdBy {
+      userId
+      username
+    }
+    activeUserCount
+  }
+}
+
+mutation requestResource($resourceId: String!, $requestFrom: RequestSource!) {
+  requestResource(resourceId: $resourceId, requestFrom: $requestFrom) {
+    status
+    errorCode
+    errorMessage
+    updatedResourceCard {
+      resourceId
+      activeUserCount
+      maxActiveTickets
+      queuePosition
+      creationDate
+      createdBy {
+        userId
+        username
+      }
+      lastModificationDate
+      name
+      description
+      ticketId
+      statusCode
+      lastStatusTimestamp
+      role
+    }
+    updatedResourceView {
+      id
+      name
+      description
+      maxActiveTickets
+      creationDate
+      lastModificationDate
+      tickets {
+        ticketId
+        creationDate
+        user {
+          userId
+          username
+          name
+          surname
+          role
+        }
+        lastStatus {
+          timestamp
+          statusCode
+          queuePosition
+        }
+      }
+      createdBy {
+        userId
+        username
+      }
+      activeUserCount
+    }
+  }
+}
+
+mutation releaseResource($resourceId: String!, $requestFrom: RequestSource!) {
+  releaseResource(resourceId: $resourceId, requestFrom: $requestFrom) {
+    status
+    errorCode
+    errorMessage
+    updatedResourceCard {
+      resourceId
+      activeUserCount
+      maxActiveTickets
+      queuePosition
+      creationDate
+      createdBy {
+        userId
+        username
+      }
+      lastModificationDate
+      name
+      description
+      ticketId
+      statusCode
+      lastStatusTimestamp
+      role
+    }
+    updatedResourceView {
+      id
+      name
+      description
+      maxActiveTickets
+      creationDate
+      lastModificationDate
+      tickets {
+        ticketId
+        creationDate
+        user {
+          userId
+          username
+          name
+          surname
+          role
+        }
+        lastStatus {
+          timestamp
+          statusCode
+          queuePosition
+        }
+      }
+      createdBy {
+        userId
+        username
+      }
+      activeUserCount
+    }
+  }
+}
+
+mutation acquireResource($resourceId: String!) {
+  acquireResource(resourceId: $resourceId) {
+    status
+    errorCode
+    errorMessage
+    updatedResourceCard {
+      resourceId
+      activeUserCount
+      maxActiveTickets
+      queuePosition
+      creationDate
+      createdBy {
+        userId
+        username
+      }
+      lastModificationDate
+      name
+      description
+      ticketId
+      statusCode
+      lastStatusTimestamp
+      role
+    }
+    updatedResourceView {
+      id
+      name
+      description
+      maxActiveTickets
+      creationDate
+      lastModificationDate
+      tickets {
+        ticketId
+        creationDate
+        user {
+          userId
+          username
+          name
+          surname
+          role
+        }
+        lastStatus {
+          timestamp
+          statusCode
+          queuePosition
+        }
+      }
+      createdBy {
+        userId
+        username
+      }
+      activeUserCount
+    }
+  }
+}
+
+mutation cancelResourceAcquire($resourceId: String!) {
+  cancelResourceAcquire(resourceId: $resourceId) {
+    status
+    errorCode
+    errorMessage
+    updatedResourceCard {
+      resourceId
+      activeUserCount
+      maxActiveTickets
+      queuePosition
+      creationDate
+      createdBy {
+        userId
+        username
+      }
+      lastModificationDate
+      name
+      description
+      ticketId
+      statusCode
+      lastStatusTimestamp
+      role
+    }
+    updatedResourceView {
+      id
+      name
+      description
+      maxActiveTickets
+      creationDate
+      lastModificationDate
+      tickets {
+        ticketId
+        creationDate
+        user {
+          userId
+          username
+          name
+          surname
+          role
+        }
+        lastStatus {
+          timestamp
+          statusCode
+          queuePosition
+        }
+      }
+      createdBy {
+        userId
+        username
+      }
+      activeUserCount
+    }
+  }
+}
+
+mutation createResource($resource: InputResource!) {
+  createResource(resource: $resource) {
+    status
+    errorCode
+    errorMessage
+    newObjectId
+  }
+}
+
+mutation updateResource($resource: InputResource!) {
+  updateResource(resource: $resource) {
+    status
+    errorCode
+    errorMessage
+  }
+}
+
+mutation deleteResource($resourceId: String!) {
+  deleteResource(resourceId: $resourceId) {
+    status
+    errorCode
+    errorMessage
+  }
+}
+
+subscription newResourceReady {
+  newResourceReady {
+    id
+    name
+    createdBy {
+      userId
+      username
+    }
+    lastModificationDate
+  }
+}
+
+subscription newResourceCreated {
+  newResourceCreated {
+    # resourceId
+    activeUserCount
+    maxActiveTickets
+    queuePosition
+    creationDate
+    createdBy {
+      userId
+      username
+    }
+    lastModificationDate
+    name
+    description
+    ticketId
+    statusCode
+    lastStatusTimestamp
+    role
+  }
 }

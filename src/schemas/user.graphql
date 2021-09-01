@@ -3,64 +3,48 @@
 scalar Date
 
 type Query {
-    # Placeholder
-    login(email: String!, password: String!): AuthenticateResponse!
-    results: [Result!]!
-    # Real things
-    currentUser: User
-    searchUsers(query: String): [PublicUser!]!
+  currentUser: User
+  searchUsers(query: String): [PublicUser!]!
 }
 
 type Mutation {
-    register(email: String!, password: String!): AuthenticateResponse!
+  deleteUser(userId: String!, deleteAllFlag: Boolean!): UserDeletionResult
 }
 
-type Subscription {
-    newUpdate: Result
+type UserDeletionResult {
+  status: OperationResult!
+  errorCode: ErrorCode
+  errorMessage: String
 }
-
-
-type AuthenticateResponse {
-    token: String
-}
-
-type Result @entity {
-    id: Int! @column
-    result: String! @column
-}
-
-# End of placeholder code
 
 type PublicUser {
-    id: String
-    username: String
-    name: String
-    surname: String
+  id: String
+  username: String
+  name: String
+  surname: String
 }
 
-
 type User @entity {
-    _id: String @id
-    globalRole: GlobalRole @column
-    username: String! @column
-    name: String @column
-    surname: String @column
-    creationDate: Date @column
-    userPreferences: UserPreferences @embedded
-    oauthIds: OauthIds @embedded
-    pushURLs: [String]! @column
+  _id: String @id
+  globalRole: GlobalRole @column
+  username: String! @column
+  name: String @column
+  surname: String @column
+  creationDate: Date @column
+  userPreferences: UserPreferences @embedded
+  oauthIds: OauthIds @embedded
+  pushURLs: [String]! @column
 }
 
 type OauthIds @entity(embedded: true) {
-    googleId: String @column
+  googleId: String @column
 }
 
 type UserPreferences @entity(embedded: true) {
-    deleteAllPlans: Boolean
+  deleteAllPlans: Boolean
 }
 
-
 enum GlobalRole {
-    ADMIN,
-    USER
+  ADMIN
+  USER
 }
