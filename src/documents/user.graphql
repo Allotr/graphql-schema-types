@@ -1,26 +1,28 @@
-query login($email: String!, $password: String!){
-    login(email: $email, password: $password){
-        token
-    }
+query searchUsers($query: String) {
+  searchUsers(query: $query) {
+    id
+    username
+    name
+    surname
+  }
 }
 
-query searchUsers($query: String){
-    searchUsers(query: $query){
-        id
-        username
-        name
-        surname
-    }
+query currentUser {
+  currentUser {
+    _id
+    username
+    globalRole
+    username
+    name
+    surname
+    creationDate
+  }
 }
 
-query currentUser{
-    currentUser{
-        _id
-        username
-        globalRole
-        username
-        name
-        surname
-        creationDate
-    }
+mutation deleteUser($userId: String!, $deleteAllFlag: Boolean!) {
+  deleteUser(userId: $userId, deleteAllFlag: $deleteAllFlag) {
+    status
+    errorCode
+    errorMessage
+  }
 }

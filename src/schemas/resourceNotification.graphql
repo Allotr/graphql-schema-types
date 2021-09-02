@@ -1,0 +1,28 @@
+type Query {
+  myNotificationData: [ResourceNotification!]!
+}
+
+type Subscription {
+  myNotificationDataSub: [ResourceNotification!]!
+}
+
+type ResourceNotification @entity {
+  id: String @id
+  titleRef: String @column
+  descriptionRef: String @column
+  user: NotificationUserInfo! @embedded
+  resource: NotificationResourceData @embedded
+  ticketStatus: TicketStatusCode! @column
+  timestamp: Date @column
+}
+
+type NotificationResourceData @entity(embedded: true) {
+  id: String @id
+  name: String! @column
+  createdBy: NotificationUserInfo @embedded
+}
+
+type NotificationUserInfo @entity(embedded: true) {
+  id: String @id
+  username: String! @column
+}
