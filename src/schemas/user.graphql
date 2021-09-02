@@ -33,7 +33,18 @@ type User @entity {
   creationDate: Date @column
   userPreferences: UserPreferences @embedded
   oauthIds: OauthIds @embedded
-  pushURLs: [String]! @column
+  webPushSubscriptions: [WebPushSubscription]! @column
+}
+
+type WebPushSubscription @entity(embedded: true) {
+  _id: String @id
+  endpoint: String @column
+  keys: WebPushKeys @embedded
+}
+
+type WebPushKeys @entity(embedded: true) {
+  p256dh: String @column
+  auth: String @column
 }
 
 type OauthIds @entity(embedded: true) {

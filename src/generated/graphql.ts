@@ -138,7 +138,7 @@ export type NotificationResourceData = {
 
 export type NotificationUserInfo = {
   __typename?: 'NotificationUserInfo';
-  userId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
   username: Scalars['String'];
 };
 
@@ -262,8 +262,9 @@ export type ResourceView = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  newResourceReady?: Maybe<ResourceUpdate>;
+  myNotificationDataSub: Array<ResourceNotification>;
   newResourceCreated?: Maybe<ResourceCard>;
+  newResourceReady?: Maybe<ResourceUpdate>;
 };
 
 export type Ticket = {
@@ -332,7 +333,7 @@ export type User = {
   creationDate?: Maybe<Scalars['Date']>;
   userPreferences?: Maybe<UserPreferences>;
   oauthIds?: Maybe<OauthIds>;
-  pushURLs: Array<Maybe<Scalars['String']>>;
+  webPushSubscriptions: Array<Maybe<WebPushSubscription>>;
 };
 
 export type UserDeletionResult = {
@@ -345,6 +346,19 @@ export type UserDeletionResult = {
 export type UserPreferences = {
   __typename?: 'UserPreferences';
   deleteAllPlans?: Maybe<Scalars['Boolean']>;
+};
+
+export type WebPushKeys = {
+  __typename?: 'WebPushKeys';
+  p256dh?: Maybe<Scalars['String']>;
+  auth?: Maybe<Scalars['String']>;
+};
+
+export type WebPushSubscription = {
+  __typename?: 'WebPushSubscription';
+  _id?: Maybe<Scalars['String']>;
+  endpoint?: Maybe<Scalars['String']>;
+  keys?: Maybe<WebPushKeys>;
 };
 
 export type MyResourcesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -423,7 +437,12 @@ export type NewResourceCreatedSubscription = { __typename?: 'Subscription', newR
 export type MyNotificationDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyNotificationDataQuery = { __typename?: 'Query', myNotificationData: Array<{ __typename?: 'ResourceNotification', id?: Maybe<string>, titleRef?: Maybe<string>, descriptionRef?: Maybe<string>, ticketStatus: TicketStatusCode, timestamp?: Maybe<Date>, user: { __typename?: 'NotificationUserInfo', userId?: Maybe<string>, username: string }, resource?: Maybe<{ __typename?: 'NotificationResourceData', id?: Maybe<string>, name: string, createdBy?: Maybe<{ __typename?: 'NotificationUserInfo', userId?: Maybe<string>, username: string }> }> }> };
+export type MyNotificationDataQuery = { __typename?: 'Query', myNotificationData: Array<{ __typename?: 'ResourceNotification', id?: Maybe<string>, titleRef?: Maybe<string>, descriptionRef?: Maybe<string>, ticketStatus: TicketStatusCode, timestamp?: Maybe<Date>, user: { __typename?: 'NotificationUserInfo', id?: Maybe<string>, username: string }, resource?: Maybe<{ __typename?: 'NotificationResourceData', id?: Maybe<string>, name: string, createdBy?: Maybe<{ __typename?: 'NotificationUserInfo', id?: Maybe<string>, username: string }> }> }> };
+
+export type MyNotificationDataSubSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyNotificationDataSubSubscription = { __typename?: 'Subscription', myNotificationDataSub: Array<{ __typename?: 'ResourceNotification', id?: Maybe<string>, titleRef?: Maybe<string>, descriptionRef?: Maybe<string>, ticketStatus: TicketStatusCode, timestamp?: Maybe<Date>, user: { __typename?: 'NotificationUserInfo', id?: Maybe<string>, username: string }, resource?: Maybe<{ __typename?: 'NotificationResourceData', id?: Maybe<string>, name: string, createdBy?: Maybe<{ __typename?: 'NotificationUserInfo', id?: Maybe<string>, username: string }> }> }> };
 
 export type SearchUsersQueryVariables = Exact<{
   query?: Maybe<Scalars['String']>;
@@ -552,6 +571,8 @@ export type ResolversTypes = {
   User: ResolverTypeWrapper<User>;
   UserDeletionResult: ResolverTypeWrapper<UserDeletionResult>;
   UserPreferences: ResolverTypeWrapper<UserPreferences>;
+  WebPushKeys: ResolverTypeWrapper<WebPushKeys>;
+  WebPushSubscription: ResolverTypeWrapper<WebPushSubscription>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -588,6 +609,8 @@ export type ResolversParentTypes = {
   User: User;
   UserDeletionResult: UserDeletionResult;
   UserPreferences: UserPreferences;
+  WebPushKeys: WebPushKeys;
+  WebPushSubscription: WebPushSubscription;
 };
 
 export type UnionDirectiveArgs = {   discriminatorField?: Maybe<Scalars['String']>;
@@ -669,7 +692,7 @@ export type NotificationResourceDataResolvers<ContextType = any, ParentType exte
 };
 
 export type NotificationUserInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['NotificationUserInfo'] = ResolversParentTypes['NotificationUserInfo']> = {
-  userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -767,8 +790,9 @@ export type ResourceViewResolvers<ContextType = any, ParentType extends Resolver
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
-  newResourceReady?: SubscriptionResolver<Maybe<ResolversTypes['ResourceUpdate']>, "newResourceReady", ParentType, ContextType>;
+  myNotificationDataSub?: SubscriptionResolver<Array<ResolversTypes['ResourceNotification']>, "myNotificationDataSub", ParentType, ContextType>;
   newResourceCreated?: SubscriptionResolver<Maybe<ResolversTypes['ResourceCard']>, "newResourceCreated", ParentType, ContextType>;
+  newResourceReady?: SubscriptionResolver<Maybe<ResolversTypes['ResourceUpdate']>, "newResourceReady", ParentType, ContextType>;
 };
 
 export type TicketResolvers<ContextType = any, ParentType extends ResolversParentTypes['Ticket'] = ResolversParentTypes['Ticket']> = {
@@ -826,7 +850,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   creationDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   userPreferences?: Resolver<Maybe<ResolversTypes['UserPreferences']>, ParentType, ContextType>;
   oauthIds?: Resolver<Maybe<ResolversTypes['OauthIds']>, ParentType, ContextType>;
-  pushURLs?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>;
+  webPushSubscriptions?: Resolver<Array<Maybe<ResolversTypes['WebPushSubscription']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -839,6 +863,19 @@ export type UserDeletionResultResolvers<ContextType = any, ParentType extends Re
 
 export type UserPreferencesResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserPreferences'] = ResolversParentTypes['UserPreferences']> = {
   deleteAllPlans?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type WebPushKeysResolvers<ContextType = any, ParentType extends ResolversParentTypes['WebPushKeys'] = ResolversParentTypes['WebPushKeys']> = {
+  p256dh?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  auth?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type WebPushSubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['WebPushSubscription'] = ResolversParentTypes['WebPushSubscription']> = {
+  _id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  endpoint?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  keys?: Resolver<Maybe<ResolversTypes['WebPushKeys']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -869,6 +906,8 @@ export type Resolvers<ContextType = any> = {
   User?: UserResolvers<ContextType>;
   UserDeletionResult?: UserDeletionResultResolvers<ContextType>;
   UserPreferences?: UserPreferencesResolvers<ContextType>;
+  WebPushKeys?: WebPushKeysResolvers<ContextType>;
+  WebPushSubscription?: WebPushSubscriptionResolvers<ContextType>;
 };
 
 export type DirectiveResolvers<ContextType = any> = {
@@ -953,10 +992,21 @@ export type UserDbObject = {
   creationDate?: Maybe<Date>,
   userPreferences?: Maybe<UserPreferencesDbObject>,
   oauthIds?: Maybe<OauthIdsDbObject>,
-  pushURLs: Array<Maybe<string>>,
+  webPushSubscriptions: Array<Maybe<WebPushSubscription>>,
 };
 
 export type UserPreferencesDbObject = {};
+
+export type WebPushKeysDbObject = {
+  p256dh?: Maybe<string>,
+  auth?: Maybe<string>,
+};
+
+export type WebPushSubscriptionDbObject = {
+  _id?: Maybe<ObjectId>,
+  endpoint?: Maybe<string>,
+  keys?: Maybe<WebPushKeysDbObject>,
+};
 
 
 export const MyResources = gql`
@@ -1305,14 +1355,37 @@ export const MyNotificationData = gql`
     titleRef
     descriptionRef
     user {
-      userId
+      id
       username
     }
     resource {
       id
       name
       createdBy {
-        userId
+        id
+        username
+      }
+    }
+    ticketStatus
+    timestamp
+  }
+}
+    `;
+export const MyNotificationDataSub = gql`
+    subscription myNotificationDataSub {
+  myNotificationDataSub {
+    id
+    titleRef
+    descriptionRef
+    user {
+      id
+      username
+    }
+    resource {
+      id
+      name
+      createdBy {
+        id
         username
       }
     }

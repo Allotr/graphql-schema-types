@@ -4,15 +4,37 @@ query myNotificationData {
     titleRef
     descriptionRef
     user {
-      userId
+      id
       username
     }
     resource {
       id
       name
       createdBy {
-          userId
-          username
+        id
+        username
+      }
+    }
+    ticketStatus
+    timestamp
+  }
+}
+
+subscription myNotificationDataSub {
+  myNotificationDataSub {
+    id
+    titleRef
+    descriptionRef
+    user {
+      id
+      username
+    }
+    resource {
+      id
+      name
+      createdBy {
+        id
+        username
       }
     }
     ticketStatus

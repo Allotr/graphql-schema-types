@@ -1,5 +1,9 @@
 type Query {
-    myNotificationData: [ResourceNotification!]!
+  myNotificationData: [ResourceNotification!]!
+}
+
+type Subscription {
+  myNotificationDataSub: [ResourceNotification!]!
 }
 
 type ResourceNotification @entity {
@@ -19,6 +23,6 @@ type NotificationResourceData @entity(embedded: true) {
 }
 
 type NotificationUserInfo @entity(embedded: true) {
-  userId: String @id
+  id: String @id
   username: String! @column
 }
