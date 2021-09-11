@@ -33,6 +33,8 @@ query viewResource($resourceId: String!) {
       user {
         userId
         username
+        name
+        surname
         role
       }
       lastStatus {
