@@ -122,6 +122,7 @@ enum OperationResult {
 }
 
 input InputResource {
+  id: String
   name: String!
   description: String
   maxActiveTickets: Int!
