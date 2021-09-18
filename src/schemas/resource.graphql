@@ -1,27 +1,128 @@
-# Operations
 type Query {
+  """
+  Returns the resources shared with /created by the logged-in user
+  
+  Devuelve los recursos compartidos con o creados por el usuario de la sesión
+  """
   myResources: [ResourceCard!]!
-  viewResource(resourceId: String!): ResourceView
+  """
+  Returns the details of a resource given a resource ID
+  
+  Deuelve los detalles de un recurso dado un identificador de recurso
+  """
+  viewResource(
+    """
+    Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
+    """
+    resourceId: String!
+  ): ResourceView
 }
 
 type Mutation {
-  createResource(resource: InputResource!): CreationResult!
-  updateResource(resource: InputResource!): UpdateResult!
-  deleteResource(resourceId: String!): DeletionResult!
+  """
+  Creates a resource and returns the execution result
+  
+  Crea un recurso y devuelve el resultado de la ejecución
+  """
+  createResource(
+    """
+    Data to create a resource // Datos para crear un recurso
+    """
+    resource: InputResource!
+  ): CreationResult!
+  """
+  Modifies a resource and returns the execution result
+  
+  Modifica un recurso y devuelve el resultado de la ejecución
+  """
+  updateResource(
+    """
+    Data to update a resource // Datos para actualizar un recurso
+    """
+    resource: InputResource!
+  ): UpdateResult!
+  """
+  Deletes a resource and returns the execution result
+  
+  Borra un recurso y devuelve el resultado de la ejecución
+  """
+  deleteResource(
+    """
+    Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
+    """
+    resourceId: String!
+  ): DeletionResult!
+  """
+  Requests a resource for its usage and returns the execution result
+  
+  Solicita un recurso para ser usado y devuelve el resultado de la ejecución
+  """
   requestResource(
+    """
+    Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
+    """
     resourceId: String!
+    """
+    Origin of the resource to return the updated data // Origen del recurso para devolver los datos actualizados
+    """
     requestFrom: RequestSource!
   ): ResourceManagementResult!
+  """
+  Releases a resource that no longer needs to be used and returns the execution result
+  
+  Libera un recurso que ya no se quiera usar y devuelve el resultado de la ejecución
+  """
   releaseResource(
+    """
+    Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
+    """
     resourceId: String!
+    """
+    Origin of the resource to return the updated data // Origen del recurso para devolver los datos actualizados
+    """
     requestFrom: RequestSource!
   ): ResourceManagementResult!
-  acquireResource(resourceId: String!): ResourceManagementResult!
-  cancelResourceAcquire(resourceId: String!): ResourceManagementResult!
+  """
+  Acquires a resource once it is the turn of the user to use the resource and returns the execution result
+  
+  Obtiene un recurso cuando llega el turno del usuario para usar el recurso y devuelve el resultado de la ejecución
+  """
+  acquireResource(
+    """
+    Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
+    """
+    resourceId: String!
+  ): ResourceManagementResult!
+  """
+  Dismisses the usage confirmation of a resource once it is the turn of the user to use the resource and returns the execution result
+  
+  Cancela la obtención de un recurso cuando llega el turno del usuario para usar el recurso y devuelve el resultado de la ejecución
+  """
+  cancelResourceAcquire(
+    """
+    Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
+    """
+    resourceId: String!  
+  ): ResourceManagementResult!
 }
 
+"""
+Subscription operations for Allotr API
+
+Operaciones de suscripción de la API Allotr 
+"""
 type Subscription {
+  """
+  Subscribes to updates on resources created by/shared with the logged in user
+
+  Se suscribe a actualizaciones de recursos creados por/compartidos con el usuario de la sesión
+  """
   newResourceReady: ResourceUpdate
+  """
+  Subscribes to resources creations that are created by/shared with the logged in user
+
+  Se suscribe a creaciones de recursos que sean creados por/compartidos con el usuario de la sesión
+  """
   newResourceCreated: ResourceCard
 }
 
@@ -134,6 +235,11 @@ input ResourceUser {
   role: LocalRole!
 }
 
+"""
+MongoDB/GraphQL Resource model
+
+Modelo de Recurso de MongoDB/GraphQL
+"""
 type Resource @entity {
   id: String @id
   name: String! @column

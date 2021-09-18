@@ -1,14 +1,56 @@
-# This is placeholder code
+"""
+Custom scalar for dates
 
+Escalar personalizado para fechas
+"""
 scalar Date
 
+"""
+Query operations for Allotr API
+
+Operaciones de consulta de la API Allotr 
+"""
 type Query {
+  """
+  Returns the current logged in user
+  
+  Devuelve el usuario de la sesión actual
+  """
   currentUser: User
-  searchUsers(query: String): [PublicUser!]!
+  """
+  Searches for users given a username, name or surname
+  
+  Busca usuarios dado un username, nombre o apellido
+  """
+  searchUsers(
+    """
+    Text used for querying // Texto con el que buscar
+    """
+    query: String
+    ): [PublicUser!]!
 }
 
+"""
+Mutation operations for Allotr API
+
+Operaciones de mutación de la API Allotr 
+"""
 type Mutation {
-  deleteUser(userId: String!, deleteAllFlag: Boolean!): UserDeletionResult
+  """
+  Deletes an user
+  
+  Borra un usuario
+  """
+  deleteUser(
+    """
+    ID of the user to be deleted // ID del usuario a borrar
+    """
+    userId: String!,
+    """
+    Flag for deleting all user resources instead of only removing those without secondary administrator // Flag para borrar todos los recursos del usuario en vez de sólo borrar los que no tienen administrador secundario
+    """
+    deleteAllFlag: Boolean!
+  ): UserDeletionResult
 }
 
 type UserDeletionResult {
@@ -24,6 +66,11 @@ type PublicUser {
   surname: String
 }
 
+"""
+MongoDB/GraphQL User model
+
+Modelo de Usuario de MongoDB/GraphQL
+"""
 type User @entity {
   _id: String @id
   globalRole: GlobalRole @column
@@ -36,6 +83,11 @@ type User @entity {
   webPushSubscriptions: [WebPushSubscription]! @column
 }
 
+"""
+WebPush Subscription Model
+
+Modelo de suscripciones WebPush
+"""
 type WebPushSubscription @entity(embedded: true) {
   _id: String @id
   endpoint: String @column
@@ -55,7 +107,22 @@ type UserPreferences @entity(embedded: true) {
   deleteAllPlans: Boolean
 }
 
+"""
+User global roles enumeration
+
+Enumeración de roles globales del usuario
+"""
 enum GlobalRole {
+  """
+  An admin can access the API as an external entity with extra functionality
+
+  Un adminstrador puede acceder a la API como entidad externa con funcionalidad adicional
+  """
   ADMIN
+  """
+  A user can only access the API to act on his own behalf
+
+  Un usuario sólo puede acceder a la API para actuar como él mismo
+  """
   USER
 }
