@@ -1,14 +1,39 @@
 type Query {
+  """
+  Returns the notifications for the logged in user
+
+  Deuelve las notificaciones del usuario de la sesión
+  """
   myNotificationData: [ResourceNotification!]!
 }
 
 type Subscription {
+  """
+  Subscribes to updates on notifications for the logged in user
+
+  Se suscribe a actualizaciones de notificaciones para el usuario de la sesión
+  """
   myNotificationDataSub: [ResourceNotification!]!
 }
 
+"""
+MongoDB/GraphQL Resource Notification model
+
+Modelo de Notificación de Recurso de MongoDB/GraphQL
+"""
 type ResourceNotification @entity {
   id: String @id
+  """
+  Determines what kind of notification it is and the title shown
+
+  Determina qué tipo de notificación y el título mostrado
+  """
   titleRef: String @column
+  """
+  Determines the description shown in the notification
+
+  Determina queé se muestra en la descripción de la notificación
+  """
   descriptionRef: String @column
   user: NotificationUserInfo! @embedded
   resource: NotificationResourceData @embedded
@@ -16,12 +41,22 @@ type ResourceNotification @entity {
   timestamp: Date @column
 }
 
+"""
+MongoDB/GraphQL Notification Resource data embedded model
+
+Modelo embebido de datos de Recurso de Notificación de MongoDB/GraphQL
+"""
 type NotificationResourceData @entity(embedded: true) {
   id: String @id
   name: String! @column
   createdBy: NotificationUserInfo @embedded
 }
 
+"""
+MongoDB/GraphQL Notification User Information embedded model
+
+Modelo embebido de Información de Usuario de notificación de MongoDB/GraphQL
+"""
 type NotificationUserInfo @entity(embedded: true) {
   id: String @id
   username: String! @column

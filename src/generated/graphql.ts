@@ -12,6 +12,11 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /**
+   * Custom scalar for dates
+   *
+   * Escalar personalizado para fechas
+   */
   Date: Date;
 };
 
@@ -50,6 +55,11 @@ export type DeletionResult = {
   errorMessage?: Maybe<Scalars['String']>;
 };
 
+/**
+ * Error codes enumeration
+ *
+ * Enumerador de códigos de error
+ */
 export enum ErrorCode {
   BadData = 'BAD_DATA',
   BadConnection = 'BAD_CONNECTION',
@@ -57,8 +67,23 @@ export enum ErrorCode {
   DataChangedRefresh = 'DATA_CHANGED_REFRESH'
 }
 
+/**
+ * User global roles enumeration
+ *
+ * Enumeración de roles globales del usuario
+ */
 export enum GlobalRole {
+  /**
+   * An admin can access the API as an external entity with extra functionality
+   *
+   * Un adminstrador puede acceder a la API como entidad externa con funcionalidad adicional
+   */
   Admin = 'ADMIN',
+  /**
+   * A user can only access the API to act on his own behalf
+   *
+   * Un usuario sólo puede acceder a la API para actuar como él mismo
+   */
   User = 'USER'
 }
 
@@ -70,66 +95,171 @@ export type InputResource = {
   userList: Array<ResourceUser>;
 };
 
+/**
+ * Local role enumeration
+ *
+ * Enumeración de roles locales
+ */
 export enum LocalRole {
+  /**
+   * The user can edit or delete the resurce apart from user privileges
+   *
+   * El usuario puede editar o borrar el recurso aparte de sus privilegios de usuario
+   */
   ResourceAdmin = 'RESOURCE_ADMIN',
+  /**
+   * The user can view or interact with the resource
+   *
+   * El usuario puede ver o interactuar con el recurso
+   */
   ResourceUser = 'RESOURCE_USER'
 }
 
+/**
+ * Mutation operations for Allotr API
+ *
+ * Operaciones de mutación de la API Allotr
+ */
 export type Mutation = {
   __typename?: 'Mutation';
+  /**
+   * Acquires a resource once it is the turn of the user to use the resource and returns the execution result
+   *
+   * Obtiene un recurso cuando llega el turno del usuario para usar el recurso y devuelve el resultado de la ejecución
+   */
   acquireResource: ResourceManagementResult;
+  /**
+   * Dismisses the usage confirmation of a resource once it is the turn of the user to use the resource and returns the execution result
+   *
+   * Cancela la obtención de un recurso cuando llega el turno del usuario para usar el recurso y devuelve el resultado de la ejecución
+   */
   cancelResourceAcquire: ResourceManagementResult;
+  /**
+   * Creates a resource and returns the execution result
+   *
+   * Crea un recurso y devuelve el resultado de la ejecución
+   */
   createResource: CreationResult;
+  /**
+   * Deletes a resource and returns the execution result
+   *
+   * Borra un recurso y devuelve el resultado de la ejecución
+   */
   deleteResource: DeletionResult;
+  /**
+   * Deletes an user
+   *
+   * Borra un usuario
+   */
   deleteUser?: Maybe<UserDeletionResult>;
+  /**
+   * Releases a resource that no longer needs to be used and returns the execution result
+   *
+   * Libera un recurso que ya no se quiera usar y devuelve el resultado de la ejecución
+   */
   releaseResource: ResourceManagementResult;
+  /**
+   * Requests a resource for its usage and returns the execution result
+   *
+   * Solicita un recurso para ser usado y devuelve el resultado de la ejecución
+   */
   requestResource: ResourceManagementResult;
+  /**
+   * Modifies a resource and returns the execution result
+   *
+   * Modifica un recurso y devuelve el resultado de la ejecución
+   */
   updateResource: UpdateResult;
 };
 
 
+/**
+ * Mutation operations for Allotr API
+ *
+ * Operaciones de mutación de la API Allotr
+ */
 export type MutationAcquireResourceArgs = {
   resourceId: Scalars['String'];
 };
 
 
+/**
+ * Mutation operations for Allotr API
+ *
+ * Operaciones de mutación de la API Allotr
+ */
 export type MutationCancelResourceAcquireArgs = {
   resourceId: Scalars['String'];
 };
 
 
+/**
+ * Mutation operations for Allotr API
+ *
+ * Operaciones de mutación de la API Allotr
+ */
 export type MutationCreateResourceArgs = {
   resource: InputResource;
 };
 
 
+/**
+ * Mutation operations for Allotr API
+ *
+ * Operaciones de mutación de la API Allotr
+ */
 export type MutationDeleteResourceArgs = {
   resourceId: Scalars['String'];
 };
 
 
+/**
+ * Mutation operations for Allotr API
+ *
+ * Operaciones de mutación de la API Allotr
+ */
 export type MutationDeleteUserArgs = {
   userId: Scalars['String'];
   deleteAllFlag: Scalars['Boolean'];
 };
 
 
+/**
+ * Mutation operations for Allotr API
+ *
+ * Operaciones de mutación de la API Allotr
+ */
 export type MutationReleaseResourceArgs = {
   resourceId: Scalars['String'];
   requestFrom: RequestSource;
 };
 
 
+/**
+ * Mutation operations for Allotr API
+ *
+ * Operaciones de mutación de la API Allotr
+ */
 export type MutationRequestResourceArgs = {
   resourceId: Scalars['String'];
   requestFrom: RequestSource;
 };
 
 
+/**
+ * Mutation operations for Allotr API
+ *
+ * Operaciones de mutación de la API Allotr
+ */
 export type MutationUpdateResourceArgs = {
   resource: InputResource;
 };
 
+/**
+ * MongoDB/GraphQL Notification Resource data embedded model
+ *
+ * Modelo embebido de datos de Recurso de Notificación de MongoDB/GraphQL
+ */
 export type NotificationResourceData = {
   __typename?: 'NotificationResourceData';
   id?: Maybe<Scalars['String']>;
@@ -137,6 +267,11 @@ export type NotificationResourceData = {
   createdBy?: Maybe<NotificationUserInfo>;
 };
 
+/**
+ * MongoDB/GraphQL Notification User Information embedded model
+ *
+ * Modelo embebido de Información de Usuario de notificación de MongoDB/GraphQL
+ */
 export type NotificationUserInfo = {
   __typename?: 'NotificationUserInfo';
   id?: Maybe<Scalars['String']>;
@@ -148,6 +283,11 @@ export type OauthIds = {
   googleId?: Maybe<Scalars['String']>;
 };
 
+/**
+ * Operation result enumerator used for all mutations to return the operation outcome
+ *
+ * Enumerador de resultados de operación usado con todas las mutaciones para devolver el estado de ésta
+ */
 export enum OperationResult {
   Ok = 'OK',
   Error = 'ERROR'
@@ -161,30 +301,90 @@ export type PublicUser = {
   surname?: Maybe<Scalars['String']>;
 };
 
+/**
+ * Query operations for Allotr API
+ *
+ * Operaciones de consulta de la API Allotr
+ */
 export type Query = {
   __typename?: 'Query';
+  /**
+   * Returns the current logged in user
+   *
+   * Devuelve el usuario de la sesión actual
+   */
   currentUser?: Maybe<User>;
+  /**
+   * Returns the notifications for the logged in user
+   *
+   * Deuelve las notificaciones del usuario de la sesión
+   */
   myNotificationData: Array<ResourceNotification>;
+  /**
+   * Returns the resources shared with /created by the logged-in user
+   *
+   * Devuelve los recursos compartidos con o creados por el usuario de la sesión
+   */
   myResources: Array<ResourceCard>;
+  /**
+   * Searches for users given a username, name or surname
+   *
+   * Busca usuarios dado un username, nombre o apellido
+   */
   searchUsers: Array<PublicUser>;
+  /**
+   * Returns the details of a resource given a resource ID
+   *
+   * Deuelve los detalles de un recurso dado un identificador de recurso
+   */
   viewResource?: Maybe<ResourceView>;
 };
 
 
+/**
+ * Query operations for Allotr API
+ *
+ * Operaciones de consulta de la API Allotr
+ */
 export type QuerySearchUsersArgs = {
   query?: Maybe<Scalars['String']>;
 };
 
 
+/**
+ * Query operations for Allotr API
+ *
+ * Operaciones de consulta de la API Allotr
+ */
 export type QueryViewResourceArgs = {
   resourceId: Scalars['String'];
 };
 
+/**
+ * Request source enumeration
+ *
+ * Enumeración de orígenes de petición para recursos
+ */
 export enum RequestSource {
+  /**
+   * Request was made from the homepage and only the resource card information is returned
+   *
+   * La petición fue hecha desde la pantalla principal y sólo se devuelve la información de la tarjeta del recurso
+   */
   Home = 'HOME',
+  /**
+   * Request was made from the resource details and all the resource detailed information is returned
+   *
+   * La petición fue hecha desde los detalles del recurso y se devuelven todos el detalle del recurso
+   */
   Resource = 'RESOURCE'
 }
 
+/**
+ * MongoDB/GraphQL Resource model
+ *
+ * Modelo de Recurso de MongoDB/GraphQL
+ */
 export type Resource = {
   __typename?: 'Resource';
   id?: Maybe<Scalars['String']>;
@@ -198,6 +398,11 @@ export type Resource = {
   activeUserCount: Scalars['Int'];
 };
 
+/**
+ * A subset of the resource information for showing the current status of the resource for the logged in user
+ *
+ * Un subconjunto de la información del recurso para mostrar el estado actual del recurso para el usuario de la sesión
+ */
 export type ResourceCard = {
   __typename?: 'ResourceCard';
   resourceId: Scalars['String'];
@@ -224,10 +429,25 @@ export type ResourceManagementResult = {
   updatedResourceView?: Maybe<ResourceView>;
 };
 
+/**
+ * MongoDB/GraphQL Resource Notification model
+ *
+ * Modelo de Notificación de Recurso de MongoDB/GraphQL
+ */
 export type ResourceNotification = {
   __typename?: 'ResourceNotification';
   id?: Maybe<Scalars['String']>;
+  /**
+   * Determines what kind of notification it is and the title shown
+   *
+   * Determina qué tipo de notificación y el título mostrado
+   */
   titleRef?: Maybe<Scalars['String']>;
+  /**
+   * Determines the description shown in the notification
+   *
+   * Determina queé se muestra en la descripción de la notificación
+   */
   descriptionRef?: Maybe<Scalars['String']>;
   user: NotificationUserInfo;
   resource?: Maybe<NotificationResourceData>;
@@ -261,42 +481,142 @@ export type ResourceView = {
   activeUserCount: Scalars['Int'];
 };
 
+/**
+ * Subscription operations for Allotr API
+ *
+ * Operaciones de suscripción de la API Allotr
+ */
 export type Subscription = {
   __typename?: 'Subscription';
+  /**
+   * Subscribes to updates on notifications for the logged in user
+   *
+   * Se suscribe a actualizaciones de notificaciones para el usuario de la sesión
+   */
   myNotificationDataSub: Array<ResourceNotification>;
+  /**
+   * Subscribes to resources creations that are created by/shared with the logged in user
+   *
+   * Se suscribe a creaciones de recursos que sean creados por/compartidos con el usuario de la sesión
+   */
   newResourceCreated?: Maybe<ResourceCard>;
+  /**
+   * Subscribes to updates on resources created by/shared with the logged in user
+   *
+   * Se suscribe a actualizaciones de recursos creados por/compartidos con el usuario de la sesión
+   */
   newResourceReady?: Maybe<ResourceUpdate>;
 };
 
+/**
+ * MongoDB/GraphQL Ticket embedded model that stores the state machine status for a given user
+ *
+ * Modelo embebido de Ticket de MongoDB/GraphQL que guarda el estado de la máquina de estados para un usuario
+ */
 export type Ticket = {
   __typename?: 'Ticket';
   ticketId?: Maybe<Scalars['String']>;
   creationDate: Scalars['Date'];
   user: TicketUserInfo;
+  /**
+   * Each ticket has a status list saving all the usage made by the user and the current status
+   *
+   * Cada ticket tiene una lista de estados que guarda el progreos del recurso respecto al usuario y el estado actual
+   */
   statuses: Array<TicketStatus>;
 };
 
+/**
+ * MongoDB/GraphQL TicketStatus embedded model
+ *
+ * Modelo embebido de estado de Ticket de MongoDB/GraphQL
+ */
 export type TicketStatus = {
   __typename?: 'TicketStatus';
+  /**
+   * Datetime of creation / update
+   *
+   * Día y hora de creación y/o actualización
+   */
   timestamp: Scalars['Date'];
+  /**
+   * Reflects the status of the resource for the ticket user at this given timestamp
+   *
+   * Refleja el estado del recurso para el ticket del usuario en el momento del timestamp
+   */
   statusCode: TicketStatusCode;
+  /**
+   * Nullable field storing the position in the queue if the user is queued for using the resource
+   *
+   * Propiedad nulable que guarda la posición en la cola si el usuario se encuentra encolado para usar el recurso
+   */
   queuePosition?: Maybe<Scalars['Int']>;
 };
 
+/**
+ * Ticket status code enumeration representing the state machine
+ *
+ * Enumeración de códigos de estado del ticket
+ */
 export enum TicketStatusCode {
+  /**
+   * The user was just added to the resource. This is the initial state
+   *
+   * El usuario fue añadido al recurso. Es el estado inicial
+   */
   Initialized = 'INITIALIZED',
+  /**
+   * The user wants to use the resource
+   *
+   * El usuario quiere usar el recurso
+   */
   Requesting = 'REQUESTING',
+  /**
+   * The user entered the queue because there were no available slots
+   *
+   * El usuario entró a la cola porque no había puestos libres
+   */
   Queued = 'QUEUED',
+  /**
+   * The user queued can finally use the resource and has to confirm that still wants to use it
+   *
+   * El usuario encolado ya puede usar el recurso y tiene que confirmar si sigue queriendo usarlo
+   */
   AwaitingConfirmation = 'AWAITING_CONFIRMATION',
+  /**
+   * The user is using the resource
+   *
+   * El usuario está usando el recurso
+   */
   Active = 'ACTIVE',
+  /**
+   * The user has stopped using the resource
+   *
+   * El usuario ha dejado de usar el recurso
+   */
   Inactive = 'INACTIVE',
+  /**
+   * The user was banned or invalidated for some reason (FUTURE PROOFING, NOT IN USE)
+   *
+   * El usuario ha sido prohibido o invalidado por alguna razón (PREVISIÓN DE FUTUROS REQUISITOS, NO SE USA)
+   */
   Revoked = 'REVOKED'
 }
 
+/**
+ * MongoDB/GraphQL TicketUserInfo embedded model
+ *
+ * Modelo embebido de información de Usuario del Ticket de MongoDB/GraphQL
+ */
 export type TicketUserInfo = {
   __typename?: 'TicketUserInfo';
   userId?: Maybe<Scalars['String']>;
   username: Scalars['String'];
+  /**
+   * A user has a role that determines the actions allowed in the given resource
+   *
+   * Un usuario tiene un rol que determina las acciones permitidas en el recurso
+   */
   role: LocalRole;
 };
 
@@ -324,6 +644,11 @@ export type UpdateResult = {
   errorMessage?: Maybe<Scalars['String']>;
 };
 
+/**
+ * MongoDB/GraphQL User model
+ *
+ * Modelo de Usuario de MongoDB/GraphQL
+ */
 export type User = {
   __typename?: 'User';
   _id?: Maybe<Scalars['String']>;
@@ -355,6 +680,11 @@ export type WebPushKeys = {
   auth?: Maybe<Scalars['String']>;
 };
 
+/**
+ * WebPush Subscription Model
+ *
+ * Modelo de suscripciones WebPush
+ */
 export type WebPushSubscription = {
   __typename?: 'WebPushSubscription';
   _id?: Maybe<Scalars['String']>;

@@ -8,18 +8,18 @@ scalar Date
 """
 Query operations for Allotr API
 
-Operaciones de consulta de la API Allotr 
+Operaciones de consulta de la API Allotr
 """
 type Query {
   """
   Returns the current logged in user
-  
+
   Devuelve el usuario de la sesión actual
   """
   currentUser: User
   """
   Searches for users given a username, name or surname
-  
+
   Busca usuarios dado un username, nombre o apellido
   """
   searchUsers(
@@ -33,12 +33,12 @@ type Query {
 """
 Mutation operations for Allotr API
 
-Operaciones de mutación de la API Allotr 
+Operaciones de mutación de la API Allotr
 """
 type Mutation {
   """
   Deletes an user
-  
+
   Borra un usuario
   """
   deleteUser(

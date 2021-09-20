@@ -1,13 +1,13 @@
 type Query {
   """
   Returns the resources shared with /created by the logged-in user
-  
+
   Devuelve los recursos compartidos con o creados por el usuario de la sesión
   """
   myResources: [ResourceCard!]!
   """
   Returns the details of a resource given a resource ID
-  
+
   Deuelve los detalles de un recurso dado un identificador de recurso
   """
   viewResource(
@@ -21,7 +21,7 @@ type Query {
 type Mutation {
   """
   Creates a resource and returns the execution result
-  
+
   Crea un recurso y devuelve el resultado de la ejecución
   """
   createResource(
@@ -32,7 +32,7 @@ type Mutation {
   ): CreationResult!
   """
   Modifies a resource and returns the execution result
-  
+
   Modifica un recurso y devuelve el resultado de la ejecución
   """
   updateResource(
@@ -43,7 +43,7 @@ type Mutation {
   ): UpdateResult!
   """
   Deletes a resource and returns the execution result
-  
+
   Borra un recurso y devuelve el resultado de la ejecución
   """
   deleteResource(
@@ -54,7 +54,7 @@ type Mutation {
   ): DeletionResult!
   """
   Requests a resource for its usage and returns the execution result
-  
+
   Solicita un recurso para ser usado y devuelve el resultado de la ejecución
   """
   requestResource(
@@ -69,7 +69,7 @@ type Mutation {
   ): ResourceManagementResult!
   """
   Releases a resource that no longer needs to be used and returns the execution result
-  
+
   Libera un recurso que ya no se quiera usar y devuelve el resultado de la ejecución
   """
   releaseResource(
@@ -84,7 +84,7 @@ type Mutation {
   ): ResourceManagementResult!
   """
   Acquires a resource once it is the turn of the user to use the resource and returns the execution result
-  
+
   Obtiene un recurso cuando llega el turno del usuario para usar el recurso y devuelve el resultado de la ejecución
   """
   acquireResource(
@@ -95,21 +95,21 @@ type Mutation {
   ): ResourceManagementResult!
   """
   Dismisses the usage confirmation of a resource once it is the turn of the user to use the resource and returns the execution result
-  
+
   Cancela la obtención de un recurso cuando llega el turno del usuario para usar el recurso y devuelve el resultado de la ejecución
   """
   cancelResourceAcquire(
     """
     Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
     """
-    resourceId: String!  
+    resourceId: String!
   ): ResourceManagementResult!
 }
 
 """
 Subscription operations for Allotr API
 
-Operaciones de suscripción de la API Allotr 
+Operaciones de suscripción de la API Allotr
 """
 type Subscription {
   """
@@ -135,8 +135,23 @@ type ResourceUpdate {
   createdBy: BasicUserInfo
 }
 
+"""
+Request source enumeration
+
+Enumeración de orígenes de petición para recursos
+"""
 enum RequestSource {
+  """
+  Request was made from the homepage and only the resource card information is returned
+
+  La petición fue hecha desde la pantalla principal y sólo se devuelve la información de la tarjeta del recurso
+  """
   HOME
+  """
+  Request was made from the resource details and all the resource detailed information is returned
+
+  La petición fue hecha desde los detalles del recurso y se devuelven todos el detalle del recurso
+  """
   RESOURCE
 }
 
@@ -166,7 +181,11 @@ type TicketViewUserInfo {
   surname: String
   role: LocalRole! @column
 }
+"""
+A subset of the resource information for showing the current status of the resource for the logged in user
 
+Un subconjunto de la información del recurso para mostrar el estado actual del recurso para el usuario de la sesión
+"""
 type ResourceCard {
   resourceId: String!
   activeUserCount: Int!
@@ -210,6 +229,11 @@ type CreationResult {
   newObjectId: String
 }
 
+"""
+Error codes enumeration
+
+Enumerador de códigos de error
+"""
 enum ErrorCode {
   BAD_DATA
   BAD_CONNECTION
@@ -217,6 +241,11 @@ enum ErrorCode {
   DATA_CHANGED_REFRESH
 }
 
+"""
+Operation result enumerator used for all mutations to return the operation outcome
+
+Enumerador de resultados de operación usado con todas las mutaciones para devolver el estado de ésta
+"""
 enum OperationResult {
   OK
   ERROR
@@ -252,16 +281,46 @@ type Resource @entity {
   activeUserCount: Int! @column
 }
 
+"""
+MongoDB/GraphQL Ticket embedded model that stores the state machine status for a given user
+
+Modelo embebido de Ticket de MongoDB/GraphQL que guarda el estado de la máquina de estados para un usuario
+"""
 type Ticket @entity(embedded: true) {
   ticketId: String @id
   creationDate: Date! @column
   user: TicketUserInfo! @embedded
+  """
+  Each ticket has a status list saving all the usage made by the user and the current status
+
+  Cada ticket tiene una lista de estados que guarda el progreos del recurso respecto al usuario y el estado actual
+  """
   statuses: [TicketStatus!]! @embedded
 }
 
+"""
+MongoDB/GraphQL TicketStatus embedded model
+
+Modelo embebido de estado de Ticket de MongoDB/GraphQL
+"""
 type TicketStatus @entity(embedded: true) {
+  """
+  Datetime of creation / update
+
+  Día y hora de creación y/o actualización
+  """
   timestamp: Date! @column
+  """
+  Reflects the status of the resource for the ticket user at this given timestamp
+
+  Refleja el estado del recurso para el ticket del usuario en el momento del timestamp
+  """
   statusCode: TicketStatusCode! @column
+  """
+  Nullable field storing the position in the queue if the user is queued for using the resource
+
+  Propiedad nulable que guarda la posición en la cola si el usuario se encuentra encolado para usar el recurso
+  """
   queuePosition: Int @column
 }
 
@@ -270,9 +329,19 @@ type BasicUserInfo @entity(embedded: true) {
   username: String! @column
 }
 
+"""
+MongoDB/GraphQL TicketUserInfo embedded model
+
+Modelo embebido de información de Usuario del Ticket de MongoDB/GraphQL
+"""
 type TicketUserInfo @entity(embedded: true) {
   userId: String @id
   username: String! @column
+  """
+  A user has a role that determines the actions allowed in the given resource
+
+  Un usuario tiene un rol que determina las acciones permitidas en el recurso
+  """
   role: LocalRole! @column
 }
 
@@ -284,17 +353,72 @@ type UserPreferences @entity(embedded: true) {
   deleteAllPlans: Boolean
 }
 
+"""
+Local role enumeration
+
+Enumeración de roles locales
+"""
 enum LocalRole {
+  """
+  The user can edit or delete the resurce apart from user privileges
+
+  El usuario puede editar o borrar el recurso aparte de sus privilegios de usuario
+  """
   RESOURCE_ADMIN
+  """
+  The user can view or interact with the resource
+
+  El usuario puede ver o interactuar con el recurso
+  """
   RESOURCE_USER
 }
 
+"""
+Ticket status code enumeration representing the state machine
+
+Enumeración de códigos de estado del ticket
+"""
 enum TicketStatusCode {
+  """
+  The user was just added to the resource. This is the initial state
+
+  El usuario fue añadido al recurso. Es el estado inicial
+  """
   INITIALIZED
+  """
+  The user wants to use the resource
+
+  El usuario quiere usar el recurso
+  """
   REQUESTING
+  """
+  The user entered the queue because there were no available slots
+
+  El usuario entró a la cola porque no había puestos libres
+  """
   QUEUED
+  """
+  The user queued can finally use the resource and has to confirm that still wants to use it
+
+  El usuario encolado ya puede usar el recurso y tiene que confirmar si sigue queriendo usarlo
+  """
   AWAITING_CONFIRMATION
+  """
+  The user is using the resource
+
+  El usuario está usando el recurso
+  """
   ACTIVE
+  """
+  The user has stopped using the resource
+
+  El usuario ha dejado de usar el recurso
+  """
   INACTIVE
+  """
+  The user was banned or invalidated for some reason (FUTURE PROOFING, NOT IN USE)
+
+  El usuario ha sido prohibido o invalidado por alguna razón (PREVISIÓN DE FUTUROS REQUISITOS, NO SE USA)
+  """
   REVOKED
 }
