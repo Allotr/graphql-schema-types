@@ -1,0 +1,9 @@
+"""
+MongoDB/GraphQL UserWhitelist model
+
+Modelo de Whitelist de Usuarios de MongoDB/GraphQL
+"""
+type UserWhitelist @entity {
+  _id: String @id
+  username: String! @column
+}
