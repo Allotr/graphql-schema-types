@@ -1,6 +1,6 @@
 {
   "name": "allotr-graphql-schema-types",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "./lib/generated/graphql.js",
   "types": "./lib/generated/graphql.d.ts",

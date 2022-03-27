@@ -674,6 +674,17 @@ export type UserPreferences = {
   deleteAllPlans?: Maybe<Scalars['Boolean']>;
 };
 
+/**
+ * MongoDB/GraphQL UserWhitelist model
+ *
+ * Modelo de Whitelist de Usuarios de MongoDB/GraphQL
+ */
+export type UserWhitelist = {
+  __typename?: 'UserWhitelist';
+  _id?: Maybe<Scalars['String']>;
+  username: Scalars['String'];
+};
+
 export type WebPushKeys = {
   __typename?: 'WebPushKeys';
   p256dh?: Maybe<Scalars['String']>;
@@ -902,6 +913,7 @@ export type ResolversTypes = {
   User: ResolverTypeWrapper<User>;
   UserDeletionResult: ResolverTypeWrapper<UserDeletionResult>;
   UserPreferences: ResolverTypeWrapper<UserPreferences>;
+  UserWhitelist: ResolverTypeWrapper<UserWhitelist>;
   WebPushKeys: ResolverTypeWrapper<WebPushKeys>;
   WebPushSubscription: ResolverTypeWrapper<WebPushSubscription>;
 };
@@ -940,6 +952,7 @@ export type ResolversParentTypes = {
   User: User;
   UserDeletionResult: UserDeletionResult;
   UserPreferences: UserPreferences;
+  UserWhitelist: UserWhitelist;
   WebPushKeys: WebPushKeys;
   WebPushSubscription: WebPushSubscription;
 };
@@ -1197,6 +1210,12 @@ export type UserPreferencesResolvers<ContextType = any, ParentType extends Resol
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserWhitelistResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserWhitelist'] = ResolversParentTypes['UserWhitelist']> = {
+  _id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type WebPushKeysResolvers<ContextType = any, ParentType extends ResolversParentTypes['WebPushKeys'] = ResolversParentTypes['WebPushKeys']> = {
   p256dh?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   auth?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -1237,6 +1256,7 @@ export type Resolvers<ContextType = any> = {
   User?: UserResolvers<ContextType>;
   UserDeletionResult?: UserDeletionResultResolvers<ContextType>;
   UserPreferences?: UserPreferencesResolvers<ContextType>;
+  UserWhitelist?: UserWhitelistResolvers<ContextType>;
   WebPushKeys?: WebPushKeysResolvers<ContextType>;
   WebPushSubscription?: WebPushSubscriptionResolvers<ContextType>;
 };
@@ -1327,6 +1347,11 @@ export type UserDbObject = {
 };
 
 export type UserPreferencesDbObject = {};
+
+export type UserWhitelistDbObject = {
+  _id?: Maybe<ObjectId>,
+  username: string,
+};
 
 export type WebPushKeysDbObject = {
   p256dh?: Maybe<string>,
