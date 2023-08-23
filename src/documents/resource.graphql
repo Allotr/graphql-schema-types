@@ -1,5 +1,5 @@
-query myResources {
-  myResources {
+query myResources($userId: String) {
+  myResources(userId: $userId) {
     resourceId
     activeUserCount
     maxActiveTickets
@@ -19,8 +19,8 @@ query myResources {
   }
 }
 
-query viewResource($resourceId: String!) {
-  viewResource(resourceId: $resourceId) {
+query viewResource($userId: String, $resourceId: String!) {
+  viewResource(userId: $userId, resourceId: $resourceId) {
     id
     name
     description
@@ -51,8 +51,8 @@ query viewResource($resourceId: String!) {
   }
 }
 
-mutation requestResource($resourceId: String!, $requestFrom: RequestSource!) {
-  requestResource(resourceId: $resourceId, requestFrom: $requestFrom) {
+mutation requestResource($userId: String, $resourceId: String!, $requestFrom: RequestSource!) {
+  requestResource(userId: $userId, resourceId: $resourceId, requestFrom: $requestFrom) {
     status
     errorCode
     errorMessage
@@ -106,8 +106,8 @@ mutation requestResource($resourceId: String!, $requestFrom: RequestSource!) {
   }
 }
 
-mutation releaseResource($resourceId: String!, $requestFrom: RequestSource!) {
-  releaseResource(resourceId: $resourceId, requestFrom: $requestFrom) {
+mutation releaseResource($userId: String, $resourceId: String!, $requestFrom: RequestSource!) {
+  releaseResource(userId: $userId, resourceId: $resourceId, requestFrom: $requestFrom) {
     status
     errorCode
     errorMessage
@@ -161,8 +161,8 @@ mutation releaseResource($resourceId: String!, $requestFrom: RequestSource!) {
   }
 }
 
-mutation acquireResource($resourceId: String!) {
-  acquireResource(resourceId: $resourceId) {
+mutation acquireResource($userId: String, $resourceId: String!) {
+  acquireResource(userId: $userId, resourceId: $resourceId) {
     status
     errorCode
     errorMessage
@@ -216,8 +216,8 @@ mutation acquireResource($resourceId: String!) {
   }
 }
 
-mutation cancelResourceAcquire($resourceId: String!) {
-  cancelResourceAcquire(resourceId: $resourceId) {
+mutation cancelResourceAcquire($userId: String, $resourceId: String!) {
+  cancelResourceAcquire(userId: $userId, resourceId: $resourceId) {
     status
     errorCode
     errorMessage
@@ -271,8 +271,8 @@ mutation cancelResourceAcquire($resourceId: String!) {
   }
 }
 
-mutation createResource($resource: InputResource!) {
-  createResource(resource: $resource) {
+mutation createResource($userId: String, $resource: InputResource!) {
+  createResource(userId: $userId, resource: $resource) {
     status
     errorCode
     errorMessage
@@ -280,24 +280,24 @@ mutation createResource($resource: InputResource!) {
   }
 }
 
-mutation updateResource($resource: InputResource!) {
-  updateResource(resource: $resource) {
+mutation updateResource($userId: String, $resource: InputResource!) {
+  updateResource(userId: $userId, resource: $resource) {
     status
     errorCode
     errorMessage
   }
 }
 
-mutation deleteResource($resourceId: String!) {
-  deleteResource(resourceId: $resourceId) {
+mutation deleteResource($userId: String, $resourceId: String!) {
+  deleteResource(userId: $userId, resourceId: $resourceId) {
     status
     errorCode
     errorMessage
   }
 }
 
-subscription newResourceReady {
-  newResourceReady {
+subscription newResourceReady($userId: String) {
+  newResourceReady(userId: $userId) {
     id
     name
     createdBy {
@@ -308,8 +308,8 @@ subscription newResourceReady {
   }
 }
 
-subscription newResourceCreated {
-  newResourceCreated {
+subscription newResourceCreated($userId: String) {
+  newResourceCreated(userId: $userId) {
     # resourceId
     activeUserCount
     maxActiveTickets

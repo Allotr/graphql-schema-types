@@ -1,10 +1,50 @@
+"""
+Custom scalar for dates
+
+Escalar personalizado para fechas
+"""
+scalar Date
+
+"""
+Error codes enumeration
+
+Enumerador de códigos de error
+"""
+enum ErrorCode {
+  BAD_DATA
+  BAD_CONNECTION
+  BAD_TRANSACTION
+  DATA_CHANGED_REFRESH
+}
+
+"""
+Operation result enumerator used for all mutations to return the operation outcome
+
+Enumerador de resultados de operación usado con todas las mutaciones para devolver el estado de ésta
+"""
+enum OperationResult {
+  OK
+  ERROR
+}
+
 type Query {
   """
   Returns the notifications for the logged in user
 
   Deuelve las notificaciones del usuario de la sesión
   """
-  myNotificationData: [ResourceNotification!]!
+  myNotificationData(
+    """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+  ): [ResourceNotification!]!
+  """
+  Returns the schema for GraphQL stitching
+
+  Devuelve el esquema para GraphQL stitching
+  """
+  _sdl: String!
 }
 
 type Subscription {
@@ -13,7 +53,12 @@ type Subscription {
 
   Se suscribe a actualizaciones de notificaciones para el usuario de la sesión
   """
-  myNotificationDataSub: [ResourceNotification!]!
+  myNotificationDataSub(
+    """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+  ): [ResourceNotification!]!
 }
 
 """

@@ -1,5 +1,5 @@
-query myNotificationData {
-  myNotificationData {
+query myNotificationData($userId: String) {
+  myNotificationData(userId: $userId) {
     id
     titleRef
     descriptionRef
@@ -20,8 +20,8 @@ query myNotificationData {
   }
 }
 
-subscription myNotificationDataSub {
-  myNotificationDataSub {
+subscription myNotificationDataSub($userId: String) {
+  myNotificationDataSub(userId: $userId) {
     id
     titleRef
     descriptionRef

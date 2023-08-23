@@ -1,58 +1,47 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
   /**
    * Custom scalar for dates
    *
    * Escalar personalizado para fechas
    */
-  Date: Date;
-};
-
-
-
-
-
-
-
-
-
-export type AdditionalEntityFields = {
-  path?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
+  Date: { input: Date; output: Date; }
 };
 
 export type BasicUserInfo = {
   __typename?: 'BasicUserInfo';
-  userId?: Maybe<Scalars['String']>;
-  username: Scalars['String'];
+  userId?: Maybe<Scalars['String']['output']>;
+  username: Scalars['String']['output'];
 };
 
 export type CreationResult = {
   __typename?: 'CreationResult';
-  status: OperationResult;
   errorCode?: Maybe<ErrorCode>;
-  errorMessage?: Maybe<Scalars['String']>;
-  newObjectId?: Maybe<Scalars['String']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
+  newObjectId?: Maybe<Scalars['String']['output']>;
+  status: OperationResult;
 };
-
 
 export type DeletionResult = {
   __typename?: 'DeletionResult';
-  status: OperationResult;
   errorCode?: Maybe<ErrorCode>;
-  errorMessage?: Maybe<Scalars['String']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
+  status: OperationResult;
 };
 
 /**
@@ -61,8 +50,8 @@ export type DeletionResult = {
  * Enumerador de códigos de error
  */
 export enum ErrorCode {
-  BadData = 'BAD_DATA',
   BadConnection = 'BAD_CONNECTION',
+  BadData = 'BAD_DATA',
   BadTransaction = 'BAD_TRANSACTION',
   DataChangedRefresh = 'DATA_CHANGED_REFRESH'
 }
@@ -88,10 +77,10 @@ export enum GlobalRole {
 }
 
 export type InputResource = {
-  id?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  maxActiveTickets: Scalars['Int'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  maxActiveTickets: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
   userList: Array<ResourceUser>;
 };
 
@@ -179,7 +168,8 @@ export type Mutation = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationAcquireResourceArgs = {
-  resourceId: Scalars['String'];
+  resourceId: Scalars['String']['input'];
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -189,7 +179,8 @@ export type MutationAcquireResourceArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationCancelResourceAcquireArgs = {
-  resourceId: Scalars['String'];
+  resourceId: Scalars['String']['input'];
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -200,6 +191,7 @@ export type MutationCancelResourceAcquireArgs = {
  */
 export type MutationCreateResourceArgs = {
   resource: InputResource;
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -209,7 +201,8 @@ export type MutationCreateResourceArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationDeleteResourceArgs = {
-  resourceId: Scalars['String'];
+  resourceId: Scalars['String']['input'];
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -219,8 +212,9 @@ export type MutationDeleteResourceArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationDeleteUserArgs = {
-  userId: Scalars['String'];
-  deleteAllFlag: Scalars['Boolean'];
+  deleteAllFlag: Scalars['Boolean']['input'];
+  userId?: InputMaybe<Scalars['String']['input']>;
+  userIdToDelete: Scalars['String']['input'];
 };
 
 
@@ -230,8 +224,9 @@ export type MutationDeleteUserArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationReleaseResourceArgs = {
-  resourceId: Scalars['String'];
   requestFrom: RequestSource;
+  resourceId: Scalars['String']['input'];
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -241,8 +236,9 @@ export type MutationReleaseResourceArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationRequestResourceArgs = {
-  resourceId: Scalars['String'];
   requestFrom: RequestSource;
+  resourceId: Scalars['String']['input'];
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -253,6 +249,7 @@ export type MutationRequestResourceArgs = {
  */
 export type MutationUpdateResourceArgs = {
   resource: InputResource;
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 /**
@@ -262,9 +259,9 @@ export type MutationUpdateResourceArgs = {
  */
 export type NotificationResourceData = {
   __typename?: 'NotificationResourceData';
-  id?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
   createdBy?: Maybe<NotificationUserInfo>;
+  id?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
 };
 
 /**
@@ -274,13 +271,13 @@ export type NotificationResourceData = {
  */
 export type NotificationUserInfo = {
   __typename?: 'NotificationUserInfo';
-  id?: Maybe<Scalars['String']>;
-  username: Scalars['String'];
+  id?: Maybe<Scalars['String']['output']>;
+  username: Scalars['String']['output'];
 };
 
 export type OauthIds = {
   __typename?: 'OauthIds';
-  googleId?: Maybe<Scalars['String']>;
+  googleId?: Maybe<Scalars['String']['output']>;
 };
 
 /**
@@ -289,16 +286,16 @@ export type OauthIds = {
  * Enumerador de resultados de operación usado con todas las mutaciones para devolver el estado de ésta
  */
 export enum OperationResult {
-  Ok = 'OK',
-  Error = 'ERROR'
+  Error = 'ERROR',
+  Ok = 'OK'
 }
 
 export type PublicUser = {
   __typename?: 'PublicUser';
-  id?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  surname?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  surname?: Maybe<Scalars['String']['output']>;
+  username?: Maybe<Scalars['String']['output']>;
 };
 
 /**
@@ -308,6 +305,12 @@ export type PublicUser = {
  */
 export type Query = {
   __typename?: 'Query';
+  /**
+   * Returns the schema for GraphQL stitching
+   *
+   * Devuelve el esquema para GraphQL stitching
+   */
+  _sdl: Scalars['String']['output'];
   /**
    * Returns the current logged in user
    *
@@ -346,8 +349,28 @@ export type Query = {
  *
  * Operaciones de consulta de la API Allotr
  */
+export type QueryMyNotificationDataArgs = {
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/**
+ * Query operations for Allotr API
+ *
+ * Operaciones de consulta de la API Allotr
+ */
+export type QueryMyResourcesArgs = {
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/**
+ * Query operations for Allotr API
+ *
+ * Operaciones de consulta de la API Allotr
+ */
 export type QuerySearchUsersArgs = {
-  query?: Maybe<Scalars['String']>;
+  query?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -357,7 +380,8 @@ export type QuerySearchUsersArgs = {
  * Operaciones de consulta de la API Allotr
  */
 export type QueryViewResourceArgs = {
-  resourceId: Scalars['String'];
+  resourceId: Scalars['String']['input'];
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 /**
@@ -387,15 +411,15 @@ export enum RequestSource {
  */
 export type Resource = {
   __typename?: 'Resource';
-  id?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  maxActiveTickets: Scalars['Int'];
-  creationDate: Scalars['Date'];
-  lastModificationDate: Scalars['Date'];
-  tickets: Array<Ticket>;
+  activeUserCount: Scalars['Int']['output'];
   createdBy?: Maybe<BasicUserInfo>;
-  activeUserCount: Scalars['Int'];
+  creationDate: Scalars['Date']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  lastModificationDate: Scalars['Date']['output'];
+  maxActiveTickets: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  tickets: Array<Ticket>;
 };
 
 /**
@@ -405,26 +429,26 @@ export type Resource = {
  */
 export type ResourceCard = {
   __typename?: 'ResourceCard';
-  resourceId: Scalars['String'];
-  activeUserCount: Scalars['Int'];
-  maxActiveTickets: Scalars['Int'];
-  queuePosition?: Maybe<Scalars['Int']>;
-  creationDate: Scalars['Date'];
+  activeUserCount: Scalars['Int']['output'];
   createdBy?: Maybe<BasicUserInfo>;
-  lastModificationDate: Scalars['Date'];
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  ticketId?: Maybe<Scalars['String']>;
-  statusCode: TicketStatusCode;
-  lastStatusTimestamp: Scalars['Date'];
+  creationDate: Scalars['Date']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  lastModificationDate: Scalars['Date']['output'];
+  lastStatusTimestamp: Scalars['Date']['output'];
+  maxActiveTickets: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  queuePosition?: Maybe<Scalars['Int']['output']>;
+  resourceId: Scalars['String']['output'];
   role: LocalRole;
+  statusCode: TicketStatusCode;
+  ticketId?: Maybe<Scalars['String']['output']>;
 };
 
 export type ResourceManagementResult = {
   __typename?: 'ResourceManagementResult';
-  status: OperationResult;
   errorCode?: Maybe<ErrorCode>;
-  errorMessage?: Maybe<Scalars['String']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
+  status: OperationResult;
   updatedResourceCard?: Maybe<ResourceCard>;
   updatedResourceView?: Maybe<ResourceView>;
 };
@@ -436,49 +460,49 @@ export type ResourceManagementResult = {
  */
 export type ResourceNotification = {
   __typename?: 'ResourceNotification';
-  id?: Maybe<Scalars['String']>;
-  /**
-   * Determines what kind of notification it is and the title shown
-   *
-   * Determina qué tipo de notificación y el título mostrado
-   */
-  titleRef?: Maybe<Scalars['String']>;
   /**
    * Determines the description shown in the notification
    *
    * Determina queé se muestra en la descripción de la notificación
    */
-  descriptionRef?: Maybe<Scalars['String']>;
-  user: NotificationUserInfo;
+  descriptionRef?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
   resource?: Maybe<NotificationResourceData>;
   ticketStatus: TicketStatusCode;
-  timestamp?: Maybe<Scalars['Date']>;
+  timestamp?: Maybe<Scalars['Date']['output']>;
+  /**
+   * Determines what kind of notification it is and the title shown
+   *
+   * Determina qué tipo de notificación y el título mostrado
+   */
+  titleRef?: Maybe<Scalars['String']['output']>;
+  user: NotificationUserInfo;
 };
 
 export type ResourceUpdate = {
   __typename?: 'ResourceUpdate';
-  id?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  lastModificationDate: Scalars['Date'];
   createdBy?: Maybe<BasicUserInfo>;
+  id?: Maybe<Scalars['String']['output']>;
+  lastModificationDate: Scalars['Date']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type ResourceUser = {
-  id: Scalars['String'];
+  id: Scalars['String']['input'];
   role: LocalRole;
 };
 
 export type ResourceView = {
   __typename?: 'ResourceView';
-  id?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  maxActiveTickets: Scalars['Int'];
-  creationDate: Scalars['Date'];
-  lastModificationDate: Scalars['Date'];
-  tickets: Array<TicketView>;
+  activeUserCount: Scalars['Int']['output'];
   createdBy?: Maybe<BasicUserInfo>;
-  activeUserCount: Scalars['Int'];
+  creationDate: Scalars['Date']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  lastModificationDate: Scalars['Date']['output'];
+  maxActiveTickets: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  tickets: Array<TicketView>;
 };
 
 /**
@@ -508,6 +532,36 @@ export type Subscription = {
   newResourceReady?: Maybe<ResourceUpdate>;
 };
 
+
+/**
+ * Subscription operations for Allotr API
+ *
+ * Operaciones de suscripción de la API Allotr
+ */
+export type SubscriptionMyNotificationDataSubArgs = {
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/**
+ * Subscription operations for Allotr API
+ *
+ * Operaciones de suscripción de la API Allotr
+ */
+export type SubscriptionNewResourceCreatedArgs = {
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/**
+ * Subscription operations for Allotr API
+ *
+ * Operaciones de suscripción de la API Allotr
+ */
+export type SubscriptionNewResourceReadyArgs = {
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
 /**
  * MongoDB/GraphQL Ticket embedded model that stores the state machine status for a given user
  *
@@ -515,15 +569,15 @@ export type Subscription = {
  */
 export type Ticket = {
   __typename?: 'Ticket';
-  ticketId?: Maybe<Scalars['String']>;
-  creationDate: Scalars['Date'];
-  user: TicketUserInfo;
+  creationDate: Scalars['Date']['output'];
   /**
    * Each ticket has a status list saving all the usage made by the user and the current status
    *
    * Cada ticket tiene una lista de estados que guarda el progreos del recurso respecto al usuario y el estado actual
    */
   statuses: Array<TicketStatus>;
+  ticketId?: Maybe<Scalars['String']['output']>;
+  user: TicketUserInfo;
 };
 
 /**
@@ -534,11 +588,11 @@ export type Ticket = {
 export type TicketStatus = {
   __typename?: 'TicketStatus';
   /**
-   * Datetime of creation / update
+   * Nullable field storing the position in the queue if the user is queued for using the resource
    *
-   * Día y hora de creación y/o actualización
+   * Propiedad nulable que guarda la posición en la cola si el usuario se encuentra encolado para usar el recurso
    */
-  timestamp: Scalars['Date'];
+  queuePosition?: Maybe<Scalars['Int']['output']>;
   /**
    * Reflects the status of the resource for the ticket user at this given timestamp
    *
@@ -546,11 +600,11 @@ export type TicketStatus = {
    */
   statusCode: TicketStatusCode;
   /**
-   * Nullable field storing the position in the queue if the user is queued for using the resource
+   * Datetime of creation / update
    *
-   * Propiedad nulable que guarda la posición en la cola si el usuario se encuentra encolado para usar el recurso
+   * Día y hora de creación y/o actualización
    */
-  queuePosition?: Maybe<Scalars['Int']>;
+  timestamp: Scalars['Date']['output'];
 };
 
 /**
@@ -560,23 +614,11 @@ export type TicketStatus = {
  */
 export enum TicketStatusCode {
   /**
-   * The user was just added to the resource. This is the initial state
+   * The user is using the resource
    *
-   * El usuario fue añadido al recurso. Es el estado inicial
+   * El usuario está usando el recurso
    */
-  Initialized = 'INITIALIZED',
-  /**
-   * The user wants to use the resource
-   *
-   * El usuario quiere usar el recurso
-   */
-  Requesting = 'REQUESTING',
-  /**
-   * The user entered the queue because there were no available slots
-   *
-   * El usuario entró a la cola porque no había puestos libres
-   */
-  Queued = 'QUEUED',
+  Active = 'ACTIVE',
   /**
    * The user queued can finally use the resource and has to confirm that still wants to use it
    *
@@ -584,17 +626,29 @@ export enum TicketStatusCode {
    */
   AwaitingConfirmation = 'AWAITING_CONFIRMATION',
   /**
-   * The user is using the resource
-   *
-   * El usuario está usando el recurso
-   */
-  Active = 'ACTIVE',
-  /**
    * The user has stopped using the resource
    *
    * El usuario ha dejado de usar el recurso
    */
   Inactive = 'INACTIVE',
+  /**
+   * The user was just added to the resource. This is the initial state
+   *
+   * El usuario fue añadido al recurso. Es el estado inicial
+   */
+  Initialized = 'INITIALIZED',
+  /**
+   * The user entered the queue because there were no available slots
+   *
+   * El usuario entró a la cola porque no había puestos libres
+   */
+  Queued = 'QUEUED',
+  /**
+   * The user wants to use the resource
+   *
+   * El usuario quiere usar el recurso
+   */
+  Requesting = 'REQUESTING',
   /**
    * The user was banned or invalidated for some reason (FUTURE PROOFING, NOT IN USE)
    *
@@ -610,38 +664,38 @@ export enum TicketStatusCode {
  */
 export type TicketUserInfo = {
   __typename?: 'TicketUserInfo';
-  userId?: Maybe<Scalars['String']>;
-  username: Scalars['String'];
   /**
    * A user has a role that determines the actions allowed in the given resource
    *
    * Un usuario tiene un rol que determina las acciones permitidas en el recurso
    */
   role: LocalRole;
+  userId?: Maybe<Scalars['String']['output']>;
+  username: Scalars['String']['output'];
 };
 
 export type TicketView = {
   __typename?: 'TicketView';
-  ticketId?: Maybe<Scalars['String']>;
-  creationDate: Scalars['Date'];
-  user: TicketViewUserInfo;
+  creationDate: Scalars['Date']['output'];
   lastStatus: TicketStatus;
+  ticketId?: Maybe<Scalars['String']['output']>;
+  user: TicketViewUserInfo;
 };
 
 export type TicketViewUserInfo = {
   __typename?: 'TicketViewUserInfo';
-  userId?: Maybe<Scalars['String']>;
-  username: Scalars['String'];
-  name?: Maybe<Scalars['String']>;
-  surname?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']['output']>;
   role: LocalRole;
+  surname?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
+  username: Scalars['String']['output'];
 };
 
 export type UpdateResult = {
   __typename?: 'UpdateResult';
-  status: OperationResult;
   errorCode?: Maybe<ErrorCode>;
-  errorMessage?: Maybe<Scalars['String']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
+  status: OperationResult;
 };
 
 /**
@@ -651,27 +705,27 @@ export type UpdateResult = {
  */
 export type User = {
   __typename?: 'User';
-  _id?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['String']['output']>;
+  creationDate?: Maybe<Scalars['Date']['output']>;
   globalRole?: Maybe<GlobalRole>;
-  username: Scalars['String'];
-  name?: Maybe<Scalars['String']>;
-  surname?: Maybe<Scalars['String']>;
-  creationDate?: Maybe<Scalars['Date']>;
-  userPreferences?: Maybe<UserPreferences>;
+  name?: Maybe<Scalars['String']['output']>;
   oauthIds?: Maybe<OauthIds>;
+  surname?: Maybe<Scalars['String']['output']>;
+  userPreferences?: Maybe<UserPreferences>;
+  username: Scalars['String']['output'];
   webPushSubscriptions: Array<Maybe<WebPushSubscription>>;
 };
 
 export type UserDeletionResult = {
   __typename?: 'UserDeletionResult';
-  status: OperationResult;
   errorCode?: Maybe<ErrorCode>;
-  errorMessage?: Maybe<Scalars['String']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
+  status: OperationResult;
 };
 
 export type UserPreferences = {
   __typename?: 'UserPreferences';
-  deleteAllPlans?: Maybe<Scalars['Boolean']>;
+  deleteAllPlans?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /**
@@ -681,14 +735,14 @@ export type UserPreferences = {
  */
 export type UserWhitelist = {
   __typename?: 'UserWhitelist';
-  _id?: Maybe<Scalars['String']>;
-  username: Scalars['String'];
+  _id?: Maybe<Scalars['String']['output']>;
+  username: Scalars['String']['output'];
 };
 
 export type WebPushKeys = {
   __typename?: 'WebPushKeys';
-  p256dh?: Maybe<Scalars['String']>;
-  auth?: Maybe<Scalars['String']>;
+  auth?: Maybe<Scalars['String']['output']>;
+  p256dh?: Maybe<Scalars['String']['output']>;
 };
 
 /**
@@ -698,113 +752,137 @@ export type WebPushKeys = {
  */
 export type WebPushSubscription = {
   __typename?: 'WebPushSubscription';
-  _id?: Maybe<Scalars['String']>;
-  endpoint?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['String']['output']>;
+  endpoint?: Maybe<Scalars['String']['output']>;
   keys?: Maybe<WebPushKeys>;
 };
 
-export type MyResourcesQueryVariables = Exact<{ [key: string]: never; }>;
+export type AdditionalEntityFields = {
+  path?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MyResourcesQueryVariables = Exact<{
+  userId?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
-export type MyResourcesQuery = { __typename?: 'Query', myResources: Array<{ __typename?: 'ResourceCard', resourceId: string, activeUserCount: number, maxActiveTickets: number, queuePosition?: Maybe<number>, creationDate: Date, lastModificationDate: Date, name: string, description?: Maybe<string>, ticketId?: Maybe<string>, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }> };
+export type MyResourcesQuery = { __typename?: 'Query', myResources: Array<{ __typename?: 'ResourceCard', resourceId: string, activeUserCount: number, maxActiveTickets: number, queuePosition?: number | null, creationDate: Date, lastModificationDate: Date, name: string, description?: string | null, ticketId?: string | null, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null }> };
 
 export type ViewResourceQueryVariables = Exact<{
-  resourceId: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']['input']>;
+  resourceId: Scalars['String']['input'];
 }>;
 
 
-export type ViewResourceQuery = { __typename?: 'Query', viewResource?: Maybe<{ __typename?: 'ResourceView', id?: Maybe<string>, name: string, description?: Maybe<string>, maxActiveTickets: number, creationDate: Date, lastModificationDate: Date, activeUserCount: number, tickets: Array<{ __typename?: 'TicketView', ticketId?: Maybe<string>, creationDate: Date, user: { __typename?: 'TicketViewUserInfo', userId?: Maybe<string>, username: string, name?: Maybe<string>, surname?: Maybe<string>, role: LocalRole }, lastStatus: { __typename?: 'TicketStatus', timestamp: Date, statusCode: TicketStatusCode, queuePosition?: Maybe<number> } }>, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }> };
+export type ViewResourceQuery = { __typename?: 'Query', viewResource?: { __typename?: 'ResourceView', id?: string | null, name: string, description?: string | null, maxActiveTickets: number, creationDate: Date, lastModificationDate: Date, activeUserCount: number, tickets: Array<{ __typename?: 'TicketView', ticketId?: string | null, creationDate: Date, user: { __typename?: 'TicketViewUserInfo', userId?: string | null, username: string, name?: string | null, surname?: string | null, role: LocalRole }, lastStatus: { __typename?: 'TicketStatus', timestamp: Date, statusCode: TicketStatusCode, queuePosition?: number | null } }>, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null } | null };
 
 export type RequestResourceMutationVariables = Exact<{
-  resourceId: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']['input']>;
+  resourceId: Scalars['String']['input'];
   requestFrom: RequestSource;
 }>;
 
 
-export type RequestResourceMutation = { __typename?: 'Mutation', requestResource: { __typename?: 'ResourceManagementResult', status: OperationResult, errorCode?: Maybe<ErrorCode>, errorMessage?: Maybe<string>, updatedResourceCard?: Maybe<{ __typename?: 'ResourceCard', resourceId: string, activeUserCount: number, maxActiveTickets: number, queuePosition?: Maybe<number>, creationDate: Date, lastModificationDate: Date, name: string, description?: Maybe<string>, ticketId?: Maybe<string>, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }>, updatedResourceView?: Maybe<{ __typename?: 'ResourceView', id?: Maybe<string>, name: string, description?: Maybe<string>, maxActiveTickets: number, creationDate: Date, lastModificationDate: Date, activeUserCount: number, tickets: Array<{ __typename?: 'TicketView', ticketId?: Maybe<string>, creationDate: Date, user: { __typename?: 'TicketViewUserInfo', userId?: Maybe<string>, username: string, name?: Maybe<string>, surname?: Maybe<string>, role: LocalRole }, lastStatus: { __typename?: 'TicketStatus', timestamp: Date, statusCode: TicketStatusCode, queuePosition?: Maybe<number> } }>, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }> } };
+export type RequestResourceMutation = { __typename?: 'Mutation', requestResource: { __typename?: 'ResourceManagementResult', status: OperationResult, errorCode?: ErrorCode | null, errorMessage?: string | null, updatedResourceCard?: { __typename?: 'ResourceCard', resourceId: string, activeUserCount: number, maxActiveTickets: number, queuePosition?: number | null, creationDate: Date, lastModificationDate: Date, name: string, description?: string | null, ticketId?: string | null, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null } | null, updatedResourceView?: { __typename?: 'ResourceView', id?: string | null, name: string, description?: string | null, maxActiveTickets: number, creationDate: Date, lastModificationDate: Date, activeUserCount: number, tickets: Array<{ __typename?: 'TicketView', ticketId?: string | null, creationDate: Date, user: { __typename?: 'TicketViewUserInfo', userId?: string | null, username: string, name?: string | null, surname?: string | null, role: LocalRole }, lastStatus: { __typename?: 'TicketStatus', timestamp: Date, statusCode: TicketStatusCode, queuePosition?: number | null } }>, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null } | null } };
 
 export type ReleaseResourceMutationVariables = Exact<{
-  resourceId: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']['input']>;
+  resourceId: Scalars['String']['input'];
   requestFrom: RequestSource;
 }>;
 
 
-export type ReleaseResourceMutation = { __typename?: 'Mutation', releaseResource: { __typename?: 'ResourceManagementResult', status: OperationResult, errorCode?: Maybe<ErrorCode>, errorMessage?: Maybe<string>, updatedResourceCard?: Maybe<{ __typename?: 'ResourceCard', resourceId: string, activeUserCount: number, maxActiveTickets: number, queuePosition?: Maybe<number>, creationDate: Date, lastModificationDate: Date, name: string, description?: Maybe<string>, ticketId?: Maybe<string>, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }>, updatedResourceView?: Maybe<{ __typename?: 'ResourceView', id?: Maybe<string>, name: string, description?: Maybe<string>, maxActiveTickets: number, creationDate: Date, lastModificationDate: Date, activeUserCount: number, tickets: Array<{ __typename?: 'TicketView', ticketId?: Maybe<string>, creationDate: Date, user: { __typename?: 'TicketViewUserInfo', userId?: Maybe<string>, username: string, name?: Maybe<string>, surname?: Maybe<string>, role: LocalRole }, lastStatus: { __typename?: 'TicketStatus', timestamp: Date, statusCode: TicketStatusCode, queuePosition?: Maybe<number> } }>, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }> } };
+export type ReleaseResourceMutation = { __typename?: 'Mutation', releaseResource: { __typename?: 'ResourceManagementResult', status: OperationResult, errorCode?: ErrorCode | null, errorMessage?: string | null, updatedResourceCard?: { __typename?: 'ResourceCard', resourceId: string, activeUserCount: number, maxActiveTickets: number, queuePosition?: number | null, creationDate: Date, lastModificationDate: Date, name: string, description?: string | null, ticketId?: string | null, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null } | null, updatedResourceView?: { __typename?: 'ResourceView', id?: string | null, name: string, description?: string | null, maxActiveTickets: number, creationDate: Date, lastModificationDate: Date, activeUserCount: number, tickets: Array<{ __typename?: 'TicketView', ticketId?: string | null, creationDate: Date, user: { __typename?: 'TicketViewUserInfo', userId?: string | null, username: string, name?: string | null, surname?: string | null, role: LocalRole }, lastStatus: { __typename?: 'TicketStatus', timestamp: Date, statusCode: TicketStatusCode, queuePosition?: number | null } }>, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null } | null } };
 
 export type AcquireResourceMutationVariables = Exact<{
-  resourceId: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']['input']>;
+  resourceId: Scalars['String']['input'];
 }>;
 
 
-export type AcquireResourceMutation = { __typename?: 'Mutation', acquireResource: { __typename?: 'ResourceManagementResult', status: OperationResult, errorCode?: Maybe<ErrorCode>, errorMessage?: Maybe<string>, updatedResourceCard?: Maybe<{ __typename?: 'ResourceCard', resourceId: string, activeUserCount: number, maxActiveTickets: number, queuePosition?: Maybe<number>, creationDate: Date, lastModificationDate: Date, name: string, description?: Maybe<string>, ticketId?: Maybe<string>, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }>, updatedResourceView?: Maybe<{ __typename?: 'ResourceView', id?: Maybe<string>, name: string, description?: Maybe<string>, maxActiveTickets: number, creationDate: Date, lastModificationDate: Date, activeUserCount: number, tickets: Array<{ __typename?: 'TicketView', ticketId?: Maybe<string>, creationDate: Date, user: { __typename?: 'TicketViewUserInfo', userId?: Maybe<string>, username: string, name?: Maybe<string>, surname?: Maybe<string>, role: LocalRole }, lastStatus: { __typename?: 'TicketStatus', timestamp: Date, statusCode: TicketStatusCode, queuePosition?: Maybe<number> } }>, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }> } };
+export type AcquireResourceMutation = { __typename?: 'Mutation', acquireResource: { __typename?: 'ResourceManagementResult', status: OperationResult, errorCode?: ErrorCode | null, errorMessage?: string | null, updatedResourceCard?: { __typename?: 'ResourceCard', resourceId: string, activeUserCount: number, maxActiveTickets: number, queuePosition?: number | null, creationDate: Date, lastModificationDate: Date, name: string, description?: string | null, ticketId?: string | null, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null } | null, updatedResourceView?: { __typename?: 'ResourceView', id?: string | null, name: string, description?: string | null, maxActiveTickets: number, creationDate: Date, lastModificationDate: Date, activeUserCount: number, tickets: Array<{ __typename?: 'TicketView', ticketId?: string | null, creationDate: Date, user: { __typename?: 'TicketViewUserInfo', userId?: string | null, username: string, name?: string | null, surname?: string | null, role: LocalRole }, lastStatus: { __typename?: 'TicketStatus', timestamp: Date, statusCode: TicketStatusCode, queuePosition?: number | null } }>, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null } | null } };
 
 export type CancelResourceAcquireMutationVariables = Exact<{
-  resourceId: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']['input']>;
+  resourceId: Scalars['String']['input'];
 }>;
 
 
-export type CancelResourceAcquireMutation = { __typename?: 'Mutation', cancelResourceAcquire: { __typename?: 'ResourceManagementResult', status: OperationResult, errorCode?: Maybe<ErrorCode>, errorMessage?: Maybe<string>, updatedResourceCard?: Maybe<{ __typename?: 'ResourceCard', resourceId: string, activeUserCount: number, maxActiveTickets: number, queuePosition?: Maybe<number>, creationDate: Date, lastModificationDate: Date, name: string, description?: Maybe<string>, ticketId?: Maybe<string>, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }>, updatedResourceView?: Maybe<{ __typename?: 'ResourceView', id?: Maybe<string>, name: string, description?: Maybe<string>, maxActiveTickets: number, creationDate: Date, lastModificationDate: Date, activeUserCount: number, tickets: Array<{ __typename?: 'TicketView', ticketId?: Maybe<string>, creationDate: Date, user: { __typename?: 'TicketViewUserInfo', userId?: Maybe<string>, username: string, name?: Maybe<string>, surname?: Maybe<string>, role: LocalRole }, lastStatus: { __typename?: 'TicketStatus', timestamp: Date, statusCode: TicketStatusCode, queuePosition?: Maybe<number> } }>, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }> } };
+export type CancelResourceAcquireMutation = { __typename?: 'Mutation', cancelResourceAcquire: { __typename?: 'ResourceManagementResult', status: OperationResult, errorCode?: ErrorCode | null, errorMessage?: string | null, updatedResourceCard?: { __typename?: 'ResourceCard', resourceId: string, activeUserCount: number, maxActiveTickets: number, queuePosition?: number | null, creationDate: Date, lastModificationDate: Date, name: string, description?: string | null, ticketId?: string | null, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null } | null, updatedResourceView?: { __typename?: 'ResourceView', id?: string | null, name: string, description?: string | null, maxActiveTickets: number, creationDate: Date, lastModificationDate: Date, activeUserCount: number, tickets: Array<{ __typename?: 'TicketView', ticketId?: string | null, creationDate: Date, user: { __typename?: 'TicketViewUserInfo', userId?: string | null, username: string, name?: string | null, surname?: string | null, role: LocalRole }, lastStatus: { __typename?: 'TicketStatus', timestamp: Date, statusCode: TicketStatusCode, queuePosition?: number | null } }>, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null } | null } };
 
 export type CreateResourceMutationVariables = Exact<{
+  userId?: InputMaybe<Scalars['String']['input']>;
   resource: InputResource;
 }>;
 
 
-export type CreateResourceMutation = { __typename?: 'Mutation', createResource: { __typename?: 'CreationResult', status: OperationResult, errorCode?: Maybe<ErrorCode>, errorMessage?: Maybe<string>, newObjectId?: Maybe<string> } };
+export type CreateResourceMutation = { __typename?: 'Mutation', createResource: { __typename?: 'CreationResult', status: OperationResult, errorCode?: ErrorCode | null, errorMessage?: string | null, newObjectId?: string | null } };
 
 export type UpdateResourceMutationVariables = Exact<{
+  userId?: InputMaybe<Scalars['String']['input']>;
   resource: InputResource;
 }>;
 
 
-export type UpdateResourceMutation = { __typename?: 'Mutation', updateResource: { __typename?: 'UpdateResult', status: OperationResult, errorCode?: Maybe<ErrorCode>, errorMessage?: Maybe<string> } };
+export type UpdateResourceMutation = { __typename?: 'Mutation', updateResource: { __typename?: 'UpdateResult', status: OperationResult, errorCode?: ErrorCode | null, errorMessage?: string | null } };
 
 export type DeleteResourceMutationVariables = Exact<{
-  resourceId: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']['input']>;
+  resourceId: Scalars['String']['input'];
 }>;
 
 
-export type DeleteResourceMutation = { __typename?: 'Mutation', deleteResource: { __typename?: 'DeletionResult', status: OperationResult, errorCode?: Maybe<ErrorCode>, errorMessage?: Maybe<string> } };
+export type DeleteResourceMutation = { __typename?: 'Mutation', deleteResource: { __typename?: 'DeletionResult', status: OperationResult, errorCode?: ErrorCode | null, errorMessage?: string | null } };
 
-export type NewResourceReadySubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type NewResourceReadySubscription = { __typename?: 'Subscription', newResourceReady?: Maybe<{ __typename?: 'ResourceUpdate', id?: Maybe<string>, name: string, lastModificationDate: Date, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }> };
-
-export type NewResourceCreatedSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type NewResourceReadySubscriptionVariables = Exact<{
+  userId?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
-export type NewResourceCreatedSubscription = { __typename?: 'Subscription', newResourceCreated?: Maybe<{ __typename?: 'ResourceCard', activeUserCount: number, maxActiveTickets: number, queuePosition?: Maybe<number>, creationDate: Date, lastModificationDate: Date, name: string, description?: Maybe<string>, ticketId?: Maybe<string>, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: Maybe<{ __typename?: 'BasicUserInfo', userId?: Maybe<string>, username: string }> }> };
+export type NewResourceReadySubscription = { __typename?: 'Subscription', newResourceReady?: { __typename?: 'ResourceUpdate', id?: string | null, name: string, lastModificationDate: Date, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null } | null };
 
-export type MyNotificationDataQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MyNotificationDataQuery = { __typename?: 'Query', myNotificationData: Array<{ __typename?: 'ResourceNotification', id?: Maybe<string>, titleRef?: Maybe<string>, descriptionRef?: Maybe<string>, ticketStatus: TicketStatusCode, timestamp?: Maybe<Date>, user: { __typename?: 'NotificationUserInfo', id?: Maybe<string>, username: string }, resource?: Maybe<{ __typename?: 'NotificationResourceData', id?: Maybe<string>, name: string, createdBy?: Maybe<{ __typename?: 'NotificationUserInfo', id?: Maybe<string>, username: string }> }> }> };
-
-export type MyNotificationDataSubSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type NewResourceCreatedSubscriptionVariables = Exact<{
+  userId?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
-export type MyNotificationDataSubSubscription = { __typename?: 'Subscription', myNotificationDataSub: Array<{ __typename?: 'ResourceNotification', id?: Maybe<string>, titleRef?: Maybe<string>, descriptionRef?: Maybe<string>, ticketStatus: TicketStatusCode, timestamp?: Maybe<Date>, user: { __typename?: 'NotificationUserInfo', id?: Maybe<string>, username: string }, resource?: Maybe<{ __typename?: 'NotificationResourceData', id?: Maybe<string>, name: string, createdBy?: Maybe<{ __typename?: 'NotificationUserInfo', id?: Maybe<string>, username: string }> }> }> };
+export type NewResourceCreatedSubscription = { __typename?: 'Subscription', newResourceCreated?: { __typename?: 'ResourceCard', activeUserCount: number, maxActiveTickets: number, queuePosition?: number | null, creationDate: Date, lastModificationDate: Date, name: string, description?: string | null, ticketId?: string | null, statusCode: TicketStatusCode, lastStatusTimestamp: Date, role: LocalRole, createdBy?: { __typename?: 'BasicUserInfo', userId?: string | null, username: string } | null } | null };
+
+export type MyNotificationDataQueryVariables = Exact<{
+  userId?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type MyNotificationDataQuery = { __typename?: 'Query', myNotificationData: Array<{ __typename?: 'ResourceNotification', id?: string | null, titleRef?: string | null, descriptionRef?: string | null, ticketStatus: TicketStatusCode, timestamp?: Date | null, user: { __typename?: 'NotificationUserInfo', id?: string | null, username: string }, resource?: { __typename?: 'NotificationResourceData', id?: string | null, name: string, createdBy?: { __typename?: 'NotificationUserInfo', id?: string | null, username: string } | null } | null }> };
+
+export type MyNotificationDataSubSubscriptionVariables = Exact<{
+  userId?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type MyNotificationDataSubSubscription = { __typename?: 'Subscription', myNotificationDataSub: Array<{ __typename?: 'ResourceNotification', id?: string | null, titleRef?: string | null, descriptionRef?: string | null, ticketStatus: TicketStatusCode, timestamp?: Date | null, user: { __typename?: 'NotificationUserInfo', id?: string | null, username: string }, resource?: { __typename?: 'NotificationResourceData', id?: string | null, name: string, createdBy?: { __typename?: 'NotificationUserInfo', id?: string | null, username: string } | null } | null }> };
 
 export type SearchUsersQueryVariables = Exact<{
-  query?: Maybe<Scalars['String']>;
+  query?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type SearchUsersQuery = { __typename?: 'Query', searchUsers: Array<{ __typename?: 'PublicUser', id?: Maybe<string>, username?: Maybe<string>, name?: Maybe<string>, surname?: Maybe<string> }> };
+export type SearchUsersQuery = { __typename?: 'Query', searchUsers: Array<{ __typename?: 'PublicUser', id?: string | null, username?: string | null, name?: string | null, surname?: string | null }> };
 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'Query', currentUser?: Maybe<{ __typename?: 'User', _id?: Maybe<string>, username: string, globalRole?: Maybe<GlobalRole>, name?: Maybe<string>, surname?: Maybe<string>, creationDate?: Maybe<Date> }> };
+export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', _id?: string | null, username: string, globalRole?: GlobalRole | null, name?: string | null, surname?: string | null, creationDate?: Date | null } | null };
 
 export type DeleteUserMutationVariables = Exact<{
-  userId: Scalars['String'];
-  deleteAllFlag: Scalars['Boolean'];
+  userId?: InputMaybe<Scalars['String']['input']>;
+  userIdToDelete: Scalars['String']['input'];
+  deleteAllFlag: Scalars['Boolean']['input'];
 }>;
 
 
-export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser?: Maybe<{ __typename?: 'UserDeletionResult', status: OperationResult, errorCode?: Maybe<ErrorCode>, errorMessage?: Maybe<string> }> };
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser?: { __typename?: 'UserDeletionResult', status: OperationResult, errorCode?: ErrorCode | null, errorMessage?: string | null } | null };
 
 
 
@@ -828,7 +906,7 @@ export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   args: TArgs,
   context: TContext,
   info: GraphQLResolveInfo
-) => AsyncIterator<TResult> | Promise<AsyncIterator<TResult>>;
+) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
 
 export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -873,21 +951,22 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
+
+
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  AdditionalEntityFields: AdditionalEntityFields;
-  String: ResolverTypeWrapper<Scalars['String']>;
   BasicUserInfo: ResolverTypeWrapper<BasicUserInfo>;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
   CreationResult: ResolverTypeWrapper<CreationResult>;
-  Date: ResolverTypeWrapper<Scalars['Date']>;
+  Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   DeletionResult: ResolverTypeWrapper<DeletionResult>;
   ErrorCode: ErrorCode;
   GlobalRole: GlobalRole;
   InputResource: InputResource;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   LocalRole: LocalRole;
   Mutation: ResolverTypeWrapper<{}>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   NotificationResourceData: ResolverTypeWrapper<NotificationResourceData>;
   NotificationUserInfo: ResolverTypeWrapper<NotificationUserInfo>;
   OauthIds: ResolverTypeWrapper<OauthIds>;
@@ -916,20 +995,20 @@ export type ResolversTypes = {
   UserWhitelist: ResolverTypeWrapper<UserWhitelist>;
   WebPushKeys: ResolverTypeWrapper<WebPushKeys>;
   WebPushSubscription: ResolverTypeWrapper<WebPushSubscription>;
+  AdditionalEntityFields: AdditionalEntityFields;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  AdditionalEntityFields: AdditionalEntityFields;
-  String: Scalars['String'];
   BasicUserInfo: BasicUserInfo;
+  String: Scalars['String']['output'];
   CreationResult: CreationResult;
-  Date: Scalars['Date'];
+  Date: Scalars['Date']['output'];
   DeletionResult: DeletionResult;
   InputResource: InputResource;
-  Int: Scalars['Int'];
+  Int: Scalars['Int']['output'];
   Mutation: {};
-  Boolean: Scalars['Boolean'];
+  Boolean: Scalars['Boolean']['output'];
   NotificationResourceData: NotificationResourceData;
   NotificationUserInfo: NotificationUserInfo;
   OauthIds: OauthIds;
@@ -955,40 +1034,53 @@ export type ResolversParentTypes = {
   UserWhitelist: UserWhitelist;
   WebPushKeys: WebPushKeys;
   WebPushSubscription: WebPushSubscription;
+  AdditionalEntityFields: AdditionalEntityFields;
 };
 
-export type UnionDirectiveArgs = {   discriminatorField?: Maybe<Scalars['String']>;
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>; };
+export type UnionDirectiveArgs = {
+  discriminatorField?: Maybe<Scalars['String']['input']>;
+  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>;
+};
 
 export type UnionDirectiveResolver<Result, Parent, ContextType = any, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type AbstractEntityDirectiveArgs = {   discriminatorField: Scalars['String'];
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>; };
+export type AbstractEntityDirectiveArgs = {
+  discriminatorField: Scalars['String']['input'];
+  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>;
+};
 
 export type AbstractEntityDirectiveResolver<Result, Parent, ContextType = any, Args = AbstractEntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type EntityDirectiveArgs = {   embedded?: Maybe<Scalars['Boolean']>;
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>; };
+export type EntityDirectiveArgs = {
+  embedded?: Maybe<Scalars['Boolean']['input']>;
+  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>;
+};
 
 export type EntityDirectiveResolver<Result, Parent, ContextType = any, Args = EntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type ColumnDirectiveArgs = {   overrideType?: Maybe<Scalars['String']>; };
+export type ColumnDirectiveArgs = {
+  overrideType?: Maybe<Scalars['String']['input']>;
+};
 
 export type ColumnDirectiveResolver<Result, Parent, ContextType = any, Args = ColumnDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type IdDirectiveArgs = {  };
+export type IdDirectiveArgs = { };
 
 export type IdDirectiveResolver<Result, Parent, ContextType = any, Args = IdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type LinkDirectiveArgs = {   overrideType?: Maybe<Scalars['String']>; };
+export type LinkDirectiveArgs = {
+  overrideType?: Maybe<Scalars['String']['input']>;
+};
 
 export type LinkDirectiveResolver<Result, Parent, ContextType = any, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type EmbeddedDirectiveArgs = {  };
+export type EmbeddedDirectiveArgs = { };
 
 export type EmbeddedDirectiveResolver<Result, Parent, ContextType = any, Args = EmbeddedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type MapDirectiveArgs = {   path: Scalars['String']; };
+export type MapDirectiveArgs = {
+  path: Scalars['String']['input'];
+};
 
 export type MapDirectiveResolver<Result, Parent, ContextType = any, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
@@ -999,10 +1091,10 @@ export type BasicUserInfoResolvers<ContextType = any, ParentType extends Resolve
 };
 
 export type CreationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreationResult'] = ResolversParentTypes['CreationResult']> = {
-  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   errorCode?: Resolver<Maybe<ResolversTypes['ErrorCode']>, ParentType, ContextType>;
   errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   newObjectId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1011,9 +1103,9 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type DeletionResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeletionResult'] = ResolversParentTypes['DeletionResult']> = {
-  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   errorCode?: Resolver<Maybe<ResolversTypes['ErrorCode']>, ParentType, ContextType>;
   errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1022,16 +1114,16 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   cancelResourceAcquire?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationCancelResourceAcquireArgs, 'resourceId'>>;
   createResource?: Resolver<ResolversTypes['CreationResult'], ParentType, ContextType, RequireFields<MutationCreateResourceArgs, 'resource'>>;
   deleteResource?: Resolver<ResolversTypes['DeletionResult'], ParentType, ContextType, RequireFields<MutationDeleteResourceArgs, 'resourceId'>>;
-  deleteUser?: Resolver<Maybe<ResolversTypes['UserDeletionResult']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'userId' | 'deleteAllFlag'>>;
-  releaseResource?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationReleaseResourceArgs, 'resourceId' | 'requestFrom'>>;
-  requestResource?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationRequestResourceArgs, 'resourceId' | 'requestFrom'>>;
+  deleteUser?: Resolver<Maybe<ResolversTypes['UserDeletionResult']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'deleteAllFlag' | 'userIdToDelete'>>;
+  releaseResource?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationReleaseResourceArgs, 'requestFrom' | 'resourceId'>>;
+  requestResource?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationRequestResourceArgs, 'requestFrom' | 'resourceId'>>;
   updateResource?: Resolver<ResolversTypes['UpdateResult'], ParentType, ContextType, RequireFields<MutationUpdateResourceArgs, 'resource'>>;
 };
 
 export type NotificationResourceDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['NotificationResourceData'] = ResolversParentTypes['NotificationResourceData']> = {
+  createdBy?: Resolver<Maybe<ResolversTypes['NotificationUserInfo']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['NotificationUserInfo']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1048,160 +1140,161 @@ export type OauthIdsResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type PublicUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUser'] = ResolversParentTypes['PublicUser']> = {
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   surname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  _sdl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  myNotificationData?: Resolver<Array<ResolversTypes['ResourceNotification']>, ParentType, ContextType>;
-  myResources?: Resolver<Array<ResolversTypes['ResourceCard']>, ParentType, ContextType>;
-  searchUsers?: Resolver<Array<ResolversTypes['PublicUser']>, ParentType, ContextType, RequireFields<QuerySearchUsersArgs, never>>;
+  myNotificationData?: Resolver<Array<ResolversTypes['ResourceNotification']>, ParentType, ContextType, Partial<QueryMyNotificationDataArgs>>;
+  myResources?: Resolver<Array<ResolversTypes['ResourceCard']>, ParentType, ContextType, Partial<QueryMyResourcesArgs>>;
+  searchUsers?: Resolver<Array<ResolversTypes['PublicUser']>, ParentType, ContextType, Partial<QuerySearchUsersArgs>>;
   viewResource?: Resolver<Maybe<ResolversTypes['ResourceView']>, ParentType, ContextType, RequireFields<QueryViewResourceArgs, 'resourceId'>>;
 };
 
 export type ResourceResolvers<ContextType = any, ParentType extends ResolversParentTypes['Resource'] = ResolversParentTypes['Resource']> = {
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  tickets?: Resolver<Array<ResolversTypes['Ticket']>, ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
   activeUserCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
+  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  tickets?: Resolver<Array<ResolversTypes['Ticket']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResourceCardResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceCard'] = ResolversParentTypes['ResourceCard']> = {
-  resourceId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   activeUserCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  queuePosition?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
-  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  ticketId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  statusCode?: Resolver<ResolversTypes['TicketStatusCode'], ParentType, ContextType>;
+  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   lastStatusTimestamp?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  queuePosition?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  resourceId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
+  statusCode?: Resolver<ResolversTypes['TicketStatusCode'], ParentType, ContextType>;
+  ticketId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResourceManagementResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceManagementResult'] = ResolversParentTypes['ResourceManagementResult']> = {
-  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   errorCode?: Resolver<Maybe<ResolversTypes['ErrorCode']>, ParentType, ContextType>;
   errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   updatedResourceCard?: Resolver<Maybe<ResolversTypes['ResourceCard']>, ParentType, ContextType>;
   updatedResourceView?: Resolver<Maybe<ResolversTypes['ResourceView']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResourceNotificationResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceNotification'] = ResolversParentTypes['ResourceNotification']> = {
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  titleRef?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   descriptionRef?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['NotificationUserInfo'], ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   resource?: Resolver<Maybe<ResolversTypes['NotificationResourceData']>, ParentType, ContextType>;
   ticketStatus?: Resolver<ResolversTypes['TicketStatusCode'], ParentType, ContextType>;
   timestamp?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  titleRef?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['NotificationUserInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResourceUpdateResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceUpdate'] = ResolversParentTypes['ResourceUpdate']> = {
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResourceViewResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceView'] = ResolversParentTypes['ResourceView']> = {
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  tickets?: Resolver<Array<ResolversTypes['TicketView']>, ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
   activeUserCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
+  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  tickets?: Resolver<Array<ResolversTypes['TicketView']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
-  myNotificationDataSub?: SubscriptionResolver<Array<ResolversTypes['ResourceNotification']>, "myNotificationDataSub", ParentType, ContextType>;
-  newResourceCreated?: SubscriptionResolver<Maybe<ResolversTypes['ResourceCard']>, "newResourceCreated", ParentType, ContextType>;
-  newResourceReady?: SubscriptionResolver<Maybe<ResolversTypes['ResourceUpdate']>, "newResourceReady", ParentType, ContextType>;
+  myNotificationDataSub?: SubscriptionResolver<Array<ResolversTypes['ResourceNotification']>, "myNotificationDataSub", ParentType, ContextType, Partial<SubscriptionMyNotificationDataSubArgs>>;
+  newResourceCreated?: SubscriptionResolver<Maybe<ResolversTypes['ResourceCard']>, "newResourceCreated", ParentType, ContextType, Partial<SubscriptionNewResourceCreatedArgs>>;
+  newResourceReady?: SubscriptionResolver<Maybe<ResolversTypes['ResourceUpdate']>, "newResourceReady", ParentType, ContextType, Partial<SubscriptionNewResourceReadyArgs>>;
 };
 
 export type TicketResolvers<ContextType = any, ParentType extends ResolversParentTypes['Ticket'] = ResolversParentTypes['Ticket']> = {
-  ticketId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['TicketUserInfo'], ParentType, ContextType>;
   statuses?: Resolver<Array<ResolversTypes['TicketStatus']>, ParentType, ContextType>;
+  ticketId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['TicketUserInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TicketStatusResolvers<ContextType = any, ParentType extends ResolversParentTypes['TicketStatus'] = ResolversParentTypes['TicketStatus']> = {
-  timestamp?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  statusCode?: Resolver<ResolversTypes['TicketStatusCode'], ParentType, ContextType>;
   queuePosition?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  statusCode?: Resolver<ResolversTypes['TicketStatusCode'], ParentType, ContextType>;
+  timestamp?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TicketUserInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['TicketUserInfo'] = ResolversParentTypes['TicketUserInfo']> = {
+  role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
   userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TicketViewResolvers<ContextType = any, ParentType extends ResolversParentTypes['TicketView'] = ResolversParentTypes['TicketView']> = {
-  ticketId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['TicketViewUserInfo'], ParentType, ContextType>;
   lastStatus?: Resolver<ResolversTypes['TicketStatus'], ParentType, ContextType>;
+  ticketId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['TicketViewUserInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TicketViewUserInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['TicketViewUserInfo'] = ResolversParentTypes['TicketViewUserInfo']> = {
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
+  surname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  surname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UpdateResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateResult'] = ResolversParentTypes['UpdateResult']> = {
-  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   errorCode?: Resolver<Maybe<ResolversTypes['ErrorCode']>, ParentType, ContextType>;
   errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   _id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  globalRole?: Resolver<Maybe<ResolversTypes['GlobalRole']>, ParentType, ContextType>;
-  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  surname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   creationDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  userPreferences?: Resolver<Maybe<ResolversTypes['UserPreferences']>, ParentType, ContextType>;
+  globalRole?: Resolver<Maybe<ResolversTypes['GlobalRole']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   oauthIds?: Resolver<Maybe<ResolversTypes['OauthIds']>, ParentType, ContextType>;
+  surname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  userPreferences?: Resolver<Maybe<ResolversTypes['UserPreferences']>, ParentType, ContextType>;
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   webPushSubscriptions?: Resolver<Array<Maybe<ResolversTypes['WebPushSubscription']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserDeletionResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserDeletionResult'] = ResolversParentTypes['UserDeletionResult']> = {
-  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   errorCode?: Resolver<Maybe<ResolversTypes['ErrorCode']>, ParentType, ContextType>;
   errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1217,8 +1310,8 @@ export type UserWhitelistResolvers<ContextType = any, ParentType extends Resolve
 };
 
 export type WebPushKeysResolvers<ContextType = any, ParentType extends ResolversParentTypes['WebPushKeys'] = ResolversParentTypes['WebPushKeys']> = {
-  p256dh?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   auth?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  p256dh?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1279,9 +1372,9 @@ export type BasicUserInfoDbObject = {
 };
 
 export type NotificationResourceDataDbObject = {
+  createdBy?: Maybe<NotificationUserInfoDbObject>,
   _id?: Maybe<ObjectId>,
   name: string,
-  createdBy?: Maybe<NotificationUserInfoDbObject>,
 };
 
 export type NotificationUserInfoDbObject = {
@@ -1294,55 +1387,55 @@ export type OauthIdsDbObject = {
 };
 
 export type ResourceDbObject = {
-  _id?: Maybe<ObjectId>,
-  name: string,
-  description?: Maybe<string>,
-  maxActiveTickets: number,
-  creationDate: Date,
-  lastModificationDate: Date,
-  tickets: Array<TicketDbObject>,
-  createdBy?: Maybe<BasicUserInfoDbObject>,
   activeUserCount: number,
+  createdBy?: Maybe<BasicUserInfoDbObject>,
+  creationDate: Date,
+  description?: Maybe<string>,
+  _id?: Maybe<ObjectId>,
+  lastModificationDate: Date,
+  maxActiveTickets: number,
+  name: string,
+  tickets: Array<TicketDbObject>,
 };
 
 export type ResourceNotificationDbObject = {
-  _id?: Maybe<ObjectId>,
-  titleRef?: Maybe<string>,
   descriptionRef?: Maybe<string>,
-  user: NotificationUserInfoDbObject,
+  _id?: Maybe<ObjectId>,
   resource?: Maybe<NotificationResourceDataDbObject>,
   ticketStatus: string,
   timestamp?: Maybe<Date>,
+  titleRef?: Maybe<string>,
+  user: NotificationUserInfoDbObject,
 };
 
 export type TicketDbObject = {
-  _id?: Maybe<ObjectId>,
   creationDate: Date,
-  user: TicketUserInfoDbObject,
   statuses: Array<TicketStatusDbObject>,
+  _id?: Maybe<ObjectId>,
+  user: TicketUserInfoDbObject,
 };
 
 export type TicketStatusDbObject = {
-  timestamp: Date,
-  statusCode: string,
   queuePosition?: Maybe<number>,
+  statusCode: string,
+  timestamp: Date,
 };
 
 export type TicketUserInfoDbObject = {
+  role: string,
   _id?: Maybe<ObjectId>,
   username: string,
-  role: string,
 };
 
 export type UserDbObject = {
   _id?: Maybe<ObjectId>,
-  globalRole?: Maybe<string>,
-  username: string,
-  name?: Maybe<string>,
-  surname?: Maybe<string>,
   creationDate?: Maybe<Date>,
-  userPreferences?: Maybe<UserPreferencesDbObject>,
+  globalRole?: Maybe<string>,
+  name?: Maybe<string>,
   oauthIds?: Maybe<OauthIdsDbObject>,
+  surname?: Maybe<string>,
+  userPreferences?: Maybe<UserPreferencesDbObject>,
+  username: string,
   webPushSubscriptions: Array<Maybe<WebPushSubscription>>,
 };
 
@@ -1354,8 +1447,8 @@ export type UserWhitelistDbObject = {
 };
 
 export type WebPushKeysDbObject = {
-  p256dh?: Maybe<string>,
   auth?: Maybe<string>,
+  p256dh?: Maybe<string>,
 };
 
 export type WebPushSubscriptionDbObject = {
@@ -1366,8 +1459,8 @@ export type WebPushSubscriptionDbObject = {
 
 
 export const MyResources = gql`
-    query myResources {
-  myResources {
+    query myResources($userId: String) {
+  myResources(userId: $userId) {
     resourceId
     activeUserCount
     maxActiveTickets
@@ -1388,8 +1481,8 @@ export const MyResources = gql`
 }
     `;
 export const ViewResource = gql`
-    query viewResource($resourceId: String!) {
-  viewResource(resourceId: $resourceId) {
+    query viewResource($userId: String, $resourceId: String!) {
+  viewResource(userId: $userId, resourceId: $resourceId) {
     id
     name
     description
@@ -1421,8 +1514,12 @@ export const ViewResource = gql`
 }
     `;
 export const RequestResource = gql`
-    mutation requestResource($resourceId: String!, $requestFrom: RequestSource!) {
-  requestResource(resourceId: $resourceId, requestFrom: $requestFrom) {
+    mutation requestResource($userId: String, $resourceId: String!, $requestFrom: RequestSource!) {
+  requestResource(
+    userId: $userId
+    resourceId: $resourceId
+    requestFrom: $requestFrom
+  ) {
     status
     errorCode
     errorMessage
@@ -1477,8 +1574,12 @@ export const RequestResource = gql`
 }
     `;
 export const ReleaseResource = gql`
-    mutation releaseResource($resourceId: String!, $requestFrom: RequestSource!) {
-  releaseResource(resourceId: $resourceId, requestFrom: $requestFrom) {
+    mutation releaseResource($userId: String, $resourceId: String!, $requestFrom: RequestSource!) {
+  releaseResource(
+    userId: $userId
+    resourceId: $resourceId
+    requestFrom: $requestFrom
+  ) {
     status
     errorCode
     errorMessage
@@ -1533,8 +1634,8 @@ export const ReleaseResource = gql`
 }
     `;
 export const AcquireResource = gql`
-    mutation acquireResource($resourceId: String!) {
-  acquireResource(resourceId: $resourceId) {
+    mutation acquireResource($userId: String, $resourceId: String!) {
+  acquireResource(userId: $userId, resourceId: $resourceId) {
     status
     errorCode
     errorMessage
@@ -1589,8 +1690,8 @@ export const AcquireResource = gql`
 }
     `;
 export const CancelResourceAcquire = gql`
-    mutation cancelResourceAcquire($resourceId: String!) {
-  cancelResourceAcquire(resourceId: $resourceId) {
+    mutation cancelResourceAcquire($userId: String, $resourceId: String!) {
+  cancelResourceAcquire(userId: $userId, resourceId: $resourceId) {
     status
     errorCode
     errorMessage
@@ -1645,8 +1746,8 @@ export const CancelResourceAcquire = gql`
 }
     `;
 export const CreateResource = gql`
-    mutation createResource($resource: InputResource!) {
-  createResource(resource: $resource) {
+    mutation createResource($userId: String, $resource: InputResource!) {
+  createResource(userId: $userId, resource: $resource) {
     status
     errorCode
     errorMessage
@@ -1655,8 +1756,8 @@ export const CreateResource = gql`
 }
     `;
 export const UpdateResource = gql`
-    mutation updateResource($resource: InputResource!) {
-  updateResource(resource: $resource) {
+    mutation updateResource($userId: String, $resource: InputResource!) {
+  updateResource(userId: $userId, resource: $resource) {
     status
     errorCode
     errorMessage
@@ -1664,8 +1765,8 @@ export const UpdateResource = gql`
 }
     `;
 export const DeleteResource = gql`
-    mutation deleteResource($resourceId: String!) {
-  deleteResource(resourceId: $resourceId) {
+    mutation deleteResource($userId: String, $resourceId: String!) {
+  deleteResource(userId: $userId, resourceId: $resourceId) {
     status
     errorCode
     errorMessage
@@ -1673,8 +1774,8 @@ export const DeleteResource = gql`
 }
     `;
 export const NewResourceReady = gql`
-    subscription newResourceReady {
-  newResourceReady {
+    subscription newResourceReady($userId: String) {
+  newResourceReady(userId: $userId) {
     id
     name
     createdBy {
@@ -1686,8 +1787,8 @@ export const NewResourceReady = gql`
 }
     `;
 export const NewResourceCreated = gql`
-    subscription newResourceCreated {
-  newResourceCreated {
+    subscription newResourceCreated($userId: String) {
+  newResourceCreated(userId: $userId) {
     activeUserCount
     maxActiveTickets
     queuePosition
@@ -1707,8 +1808,8 @@ export const NewResourceCreated = gql`
 }
     `;
 export const MyNotificationData = gql`
-    query myNotificationData {
-  myNotificationData {
+    query myNotificationData($userId: String) {
+  myNotificationData(userId: $userId) {
     id
     titleRef
     descriptionRef
@@ -1730,8 +1831,8 @@ export const MyNotificationData = gql`
 }
     `;
 export const MyNotificationDataSub = gql`
-    subscription myNotificationDataSub {
-  myNotificationDataSub {
+    subscription myNotificationDataSub($userId: String) {
+  myNotificationDataSub(userId: $userId) {
     id
     titleRef
     descriptionRef
@@ -1776,8 +1877,12 @@ export const CurrentUser = gql`
 }
     `;
 export const DeleteUser = gql`
-    mutation deleteUser($userId: String!, $deleteAllFlag: Boolean!) {
-  deleteUser(userId: $userId, deleteAllFlag: $deleteAllFlag) {
+    mutation deleteUser($userId: String, $userIdToDelete: String!, $deleteAllFlag: Boolean!) {
+  deleteUser(
+    userId: $userId
+    userIdToDelete: $userIdToDelete
+    deleteAllFlag: $deleteAllFlag
+  ) {
     status
     errorCode
     errorMessage
