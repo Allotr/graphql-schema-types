@@ -41,18 +41,18 @@ export type BasicUserInfo = {
 
 export type CreationResult = {
   __typename?: 'CreationResult';
+  status: OperationResult;
   errorCode?: Maybe<ErrorCode>;
   errorMessage?: Maybe<Scalars['String']>;
   newObjectId?: Maybe<Scalars['String']>;
-  status: OperationResult;
 };
 
 
 export type DeletionResult = {
   __typename?: 'DeletionResult';
+  status: OperationResult;
   errorCode?: Maybe<ErrorCode>;
   errorMessage?: Maybe<Scalars['String']>;
-  status: OperationResult;
 };
 
 /**
@@ -88,10 +88,10 @@ export enum GlobalRole {
 }
 
 export type InputResource = {
-  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
-  maxActiveTickets: Scalars['Int'];
   name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  maxActiveTickets: Scalars['Int'];
   userList: Array<ResourceUser>;
 };
 
@@ -179,8 +179,8 @@ export type Mutation = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationAcquireResourceArgs = {
-  resourceId: Scalars['String'];
   userId?: Maybe<Scalars['String']>;
+  resourceId: Scalars['String'];
 };
 
 
@@ -190,8 +190,8 @@ export type MutationAcquireResourceArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationCancelResourceAcquireArgs = {
-  resourceId: Scalars['String'];
   userId?: Maybe<Scalars['String']>;
+  resourceId: Scalars['String'];
 };
 
 
@@ -201,8 +201,8 @@ export type MutationCancelResourceAcquireArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationCreateResourceArgs = {
-  resource: InputResource;
   userId?: Maybe<Scalars['String']>;
+  resource: InputResource;
 };
 
 
@@ -212,8 +212,8 @@ export type MutationCreateResourceArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationDeleteResourceArgs = {
-  resourceId: Scalars['String'];
   userId?: Maybe<Scalars['String']>;
+  resourceId: Scalars['String'];
 };
 
 
@@ -223,9 +223,9 @@ export type MutationDeleteResourceArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationDeleteUserArgs = {
-  deleteAllFlag: Scalars['Boolean'];
   userId?: Maybe<Scalars['String']>;
   userIdToDelete: Scalars['String'];
+  deleteAllFlag: Scalars['Boolean'];
 };
 
 
@@ -235,9 +235,9 @@ export type MutationDeleteUserArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationReleaseResourceArgs = {
-  requestFrom: RequestSource;
-  resourceId: Scalars['String'];
   userId?: Maybe<Scalars['String']>;
+  resourceId: Scalars['String'];
+  requestFrom: RequestSource;
 };
 
 
@@ -247,9 +247,9 @@ export type MutationReleaseResourceArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationRequestResourceArgs = {
-  requestFrom: RequestSource;
-  resourceId: Scalars['String'];
   userId?: Maybe<Scalars['String']>;
+  resourceId: Scalars['String'];
+  requestFrom: RequestSource;
 };
 
 
@@ -259,8 +259,8 @@ export type MutationRequestResourceArgs = {
  * Operaciones de mutación de la API Allotr
  */
 export type MutationUpdateResourceArgs = {
-  resource: InputResource;
   userId?: Maybe<Scalars['String']>;
+  resource: InputResource;
 };
 
 /**
@@ -270,9 +270,9 @@ export type MutationUpdateResourceArgs = {
  */
 export type NotificationResourceData = {
   __typename?: 'NotificationResourceData';
-  createdBy?: Maybe<NotificationUserInfo>;
   id?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  createdBy?: Maybe<NotificationUserInfo>;
 };
 
 /**
@@ -304,9 +304,9 @@ export enum OperationResult {
 export type PublicUser = {
   __typename?: 'PublicUser';
   id?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   surname?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
 };
 
 /**
@@ -391,8 +391,8 @@ export type QuerySearchUsersArgs = {
  * Operaciones de consulta de la API Allotr
  */
 export type QueryViewResourceArgs = {
-  resourceId: Scalars['String'];
   userId?: Maybe<Scalars['String']>;
+  resourceId: Scalars['String'];
 };
 
 /**
@@ -422,15 +422,15 @@ export enum RequestSource {
  */
 export type Resource = {
   __typename?: 'Resource';
-  activeUserCount: Scalars['Int'];
-  createdBy?: Maybe<BasicUserInfo>;
-  creationDate: Scalars['Date'];
-  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
-  lastModificationDate: Scalars['Date'];
-  maxActiveTickets: Scalars['Int'];
   name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  maxActiveTickets: Scalars['Int'];
+  creationDate: Scalars['Date'];
+  lastModificationDate: Scalars['Date'];
   tickets: Array<Ticket>;
+  createdBy?: Maybe<BasicUserInfo>;
+  activeUserCount: Scalars['Int'];
 };
 
 /**
@@ -440,26 +440,26 @@ export type Resource = {
  */
 export type ResourceCard = {
   __typename?: 'ResourceCard';
-  activeUserCount: Scalars['Int'];
-  createdBy?: Maybe<BasicUserInfo>;
-  creationDate: Scalars['Date'];
-  description?: Maybe<Scalars['String']>;
-  lastModificationDate: Scalars['Date'];
-  lastStatusTimestamp: Scalars['Date'];
-  maxActiveTickets: Scalars['Int'];
-  name: Scalars['String'];
-  queuePosition?: Maybe<Scalars['Int']>;
   resourceId: Scalars['String'];
-  role: LocalRole;
-  statusCode: TicketStatusCode;
+  activeUserCount: Scalars['Int'];
+  maxActiveTickets: Scalars['Int'];
+  queuePosition?: Maybe<Scalars['Int']>;
+  creationDate: Scalars['Date'];
+  createdBy?: Maybe<BasicUserInfo>;
+  lastModificationDate: Scalars['Date'];
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   ticketId?: Maybe<Scalars['String']>;
+  statusCode: TicketStatusCode;
+  lastStatusTimestamp: Scalars['Date'];
+  role: LocalRole;
 };
 
 export type ResourceManagementResult = {
   __typename?: 'ResourceManagementResult';
+  status: OperationResult;
   errorCode?: Maybe<ErrorCode>;
   errorMessage?: Maybe<Scalars['String']>;
-  status: OperationResult;
   updatedResourceCard?: Maybe<ResourceCard>;
   updatedResourceView?: Maybe<ResourceView>;
 };
@@ -471,31 +471,31 @@ export type ResourceManagementResult = {
  */
 export type ResourceNotification = {
   __typename?: 'ResourceNotification';
-  /**
-   * Determines the description shown in the notification
-   *
-   * Determina queé se muestra en la descripción de la notificación
-   */
-  descriptionRef?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
-  resource?: Maybe<NotificationResourceData>;
-  ticketStatus: TicketStatusCode;
-  timestamp?: Maybe<Scalars['Date']>;
   /**
    * Determines what kind of notification it is and the title shown
    *
    * Determina qué tipo de notificación y el título mostrado
    */
   titleRef?: Maybe<Scalars['String']>;
+  /**
+   * Determines the description shown in the notification
+   *
+   * Determina queé se muestra en la descripción de la notificación
+   */
+  descriptionRef?: Maybe<Scalars['String']>;
   user: NotificationUserInfo;
+  resource?: Maybe<NotificationResourceData>;
+  ticketStatus: TicketStatusCode;
+  timestamp?: Maybe<Scalars['Date']>;
 };
 
 export type ResourceUpdate = {
   __typename?: 'ResourceUpdate';
-  createdBy?: Maybe<BasicUserInfo>;
   id?: Maybe<Scalars['String']>;
-  lastModificationDate: Scalars['Date'];
   name: Scalars['String'];
+  lastModificationDate: Scalars['Date'];
+  createdBy?: Maybe<BasicUserInfo>;
 };
 
 export type ResourceUser = {
@@ -505,15 +505,15 @@ export type ResourceUser = {
 
 export type ResourceView = {
   __typename?: 'ResourceView';
-  activeUserCount: Scalars['Int'];
-  createdBy?: Maybe<BasicUserInfo>;
-  creationDate: Scalars['Date'];
-  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
-  lastModificationDate: Scalars['Date'];
-  maxActiveTickets: Scalars['Int'];
   name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  maxActiveTickets: Scalars['Int'];
+  creationDate: Scalars['Date'];
+  lastModificationDate: Scalars['Date'];
   tickets: Array<TicketView>;
+  createdBy?: Maybe<BasicUserInfo>;
+  activeUserCount: Scalars['Int'];
 };
 
 /**
@@ -580,15 +580,15 @@ export type SubscriptionNewResourceReadyArgs = {
  */
 export type Ticket = {
   __typename?: 'Ticket';
+  ticketId?: Maybe<Scalars['String']>;
   creationDate: Scalars['Date'];
+  user: TicketUserInfo;
   /**
    * Each ticket has a status list saving all the usage made by the user and the current status
    *
    * Cada ticket tiene una lista de estados que guarda el progreos del recurso respecto al usuario y el estado actual
    */
   statuses: Array<TicketStatus>;
-  ticketId?: Maybe<Scalars['String']>;
-  user: TicketUserInfo;
 };
 
 /**
@@ -599,11 +599,11 @@ export type Ticket = {
 export type TicketStatus = {
   __typename?: 'TicketStatus';
   /**
-   * Nullable field storing the position in the queue if the user is queued for using the resource
+   * Datetime of creation / update
    *
-   * Propiedad nulable que guarda la posición en la cola si el usuario se encuentra encolado para usar el recurso
+   * Día y hora de creación y/o actualización
    */
-  queuePosition?: Maybe<Scalars['Int']>;
+  timestamp: Scalars['Date'];
   /**
    * Reflects the status of the resource for the ticket user at this given timestamp
    *
@@ -611,11 +611,11 @@ export type TicketStatus = {
    */
   statusCode: TicketStatusCode;
   /**
-   * Datetime of creation / update
+   * Nullable field storing the position in the queue if the user is queued for using the resource
    *
-   * Día y hora de creación y/o actualización
+   * Propiedad nulable que guarda la posición en la cola si el usuario se encuentra encolado para usar el recurso
    */
-  timestamp: Scalars['Date'];
+  queuePosition?: Maybe<Scalars['Int']>;
 };
 
 /**
@@ -675,38 +675,38 @@ export enum TicketStatusCode {
  */
 export type TicketUserInfo = {
   __typename?: 'TicketUserInfo';
+  userId?: Maybe<Scalars['String']>;
+  username: Scalars['String'];
   /**
    * A user has a role that determines the actions allowed in the given resource
    *
    * Un usuario tiene un rol que determina las acciones permitidas en el recurso
    */
   role: LocalRole;
-  userId?: Maybe<Scalars['String']>;
-  username: Scalars['String'];
 };
 
 export type TicketView = {
   __typename?: 'TicketView';
-  creationDate: Scalars['Date'];
-  lastStatus: TicketStatus;
   ticketId?: Maybe<Scalars['String']>;
+  creationDate: Scalars['Date'];
   user: TicketViewUserInfo;
+  lastStatus: TicketStatus;
 };
 
 export type TicketViewUserInfo = {
   __typename?: 'TicketViewUserInfo';
-  name?: Maybe<Scalars['String']>;
-  role: LocalRole;
-  surname?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
   username: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  surname?: Maybe<Scalars['String']>;
+  role: LocalRole;
 };
 
 export type UpdateResult = {
   __typename?: 'UpdateResult';
+  status: OperationResult;
   errorCode?: Maybe<ErrorCode>;
   errorMessage?: Maybe<Scalars['String']>;
-  status: OperationResult;
 };
 
 /**
@@ -717,21 +717,21 @@ export type UpdateResult = {
 export type User = {
   __typename?: 'User';
   _id?: Maybe<Scalars['String']>;
-  creationDate?: Maybe<Scalars['Date']>;
   globalRole?: Maybe<GlobalRole>;
-  name?: Maybe<Scalars['String']>;
-  oauthIds?: Maybe<OauthIds>;
-  surname?: Maybe<Scalars['String']>;
-  userPreferences?: Maybe<UserPreferences>;
   username: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  surname?: Maybe<Scalars['String']>;
+  creationDate?: Maybe<Scalars['Date']>;
+  userPreferences?: Maybe<UserPreferences>;
+  oauthIds?: Maybe<OauthIds>;
   webPushSubscriptions: Array<Maybe<WebPushSubscription>>;
 };
 
 export type UserDeletionResult = {
   __typename?: 'UserDeletionResult';
+  status: OperationResult;
   errorCode?: Maybe<ErrorCode>;
   errorMessage?: Maybe<Scalars['String']>;
-  status: OperationResult;
 };
 
 export type UserPreferences = {
@@ -752,8 +752,8 @@ export type UserWhitelist = {
 
 export type WebPushKeys = {
   __typename?: 'WebPushKeys';
-  auth?: Maybe<Scalars['String']>;
   p256dh?: Maybe<Scalars['String']>;
+  auth?: Maybe<Scalars['String']>;
 };
 
 /**
@@ -1083,10 +1083,10 @@ export type BasicUserInfoResolvers<ContextType = any, ParentType extends Resolve
 };
 
 export type CreationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreationResult'] = ResolversParentTypes['CreationResult']> = {
+  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   errorCode?: Resolver<Maybe<ResolversTypes['ErrorCode']>, ParentType, ContextType>;
   errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   newObjectId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1095,9 +1095,9 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type DeletionResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeletionResult'] = ResolversParentTypes['DeletionResult']> = {
+  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   errorCode?: Resolver<Maybe<ResolversTypes['ErrorCode']>, ParentType, ContextType>;
   errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1106,16 +1106,16 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   cancelResourceAcquire?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationCancelResourceAcquireArgs, 'resourceId'>>;
   createResource?: Resolver<ResolversTypes['CreationResult'], ParentType, ContextType, RequireFields<MutationCreateResourceArgs, 'resource'>>;
   deleteResource?: Resolver<ResolversTypes['DeletionResult'], ParentType, ContextType, RequireFields<MutationDeleteResourceArgs, 'resourceId'>>;
-  deleteUser?: Resolver<Maybe<ResolversTypes['UserDeletionResult']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'deleteAllFlag' | 'userIdToDelete'>>;
-  releaseResource?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationReleaseResourceArgs, 'requestFrom' | 'resourceId'>>;
-  requestResource?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationRequestResourceArgs, 'requestFrom' | 'resourceId'>>;
+  deleteUser?: Resolver<Maybe<ResolversTypes['UserDeletionResult']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'userIdToDelete' | 'deleteAllFlag'>>;
+  releaseResource?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationReleaseResourceArgs, 'resourceId' | 'requestFrom'>>;
+  requestResource?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationRequestResourceArgs, 'resourceId' | 'requestFrom'>>;
   updateResource?: Resolver<ResolversTypes['UpdateResult'], ParentType, ContextType, RequireFields<MutationUpdateResourceArgs, 'resource'>>;
 };
 
 export type NotificationResourceDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['NotificationResourceData'] = ResolversParentTypes['NotificationResourceData']> = {
-  createdBy?: Resolver<Maybe<ResolversTypes['NotificationUserInfo']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['NotificationUserInfo']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1132,9 +1132,9 @@ export type OauthIdsResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type PublicUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUser'] = ResolversParentTypes['PublicUser']> = {
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   surname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1148,73 +1148,73 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type ResourceResolvers<ContextType = any, ParentType extends ResolversParentTypes['Resource'] = ResolversParentTypes['Resource']> = {
-  activeUserCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
-  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   tickets?: Resolver<Array<ResolversTypes['Ticket']>, ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
+  activeUserCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResourceCardResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceCard'] = ResolversParentTypes['ResourceCard']> = {
-  activeUserCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
-  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  lastStatusTimestamp?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  queuePosition?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   resourceId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
-  statusCode?: Resolver<ResolversTypes['TicketStatusCode'], ParentType, ContextType>;
+  activeUserCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  queuePosition?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
+  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   ticketId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  statusCode?: Resolver<ResolversTypes['TicketStatusCode'], ParentType, ContextType>;
+  lastStatusTimestamp?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResourceManagementResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceManagementResult'] = ResolversParentTypes['ResourceManagementResult']> = {
+  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   errorCode?: Resolver<Maybe<ResolversTypes['ErrorCode']>, ParentType, ContextType>;
   errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   updatedResourceCard?: Resolver<Maybe<ResolversTypes['ResourceCard']>, ParentType, ContextType>;
   updatedResourceView?: Resolver<Maybe<ResolversTypes['ResourceView']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResourceNotificationResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceNotification'] = ResolversParentTypes['ResourceNotification']> = {
-  descriptionRef?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  titleRef?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  descriptionRef?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['NotificationUserInfo'], ParentType, ContextType>;
   resource?: Resolver<Maybe<ResolversTypes['NotificationResourceData']>, ParentType, ContextType>;
   ticketStatus?: Resolver<ResolversTypes['TicketStatusCode'], ParentType, ContextType>;
   timestamp?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  titleRef?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['NotificationUserInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResourceUpdateResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceUpdate'] = ResolversParentTypes['ResourceUpdate']> = {
-  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResourceViewResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceView'] = ResolversParentTypes['ResourceView']> = {
-  activeUserCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
-  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  maxActiveTickets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  lastModificationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   tickets?: Resolver<Array<ResolversTypes['TicketView']>, ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['BasicUserInfo']>, ParentType, ContextType>;
+  activeUserCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1225,68 +1225,68 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
 };
 
 export type TicketResolvers<ContextType = any, ParentType extends ResolversParentTypes['Ticket'] = ResolversParentTypes['Ticket']> = {
-  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  statuses?: Resolver<Array<ResolversTypes['TicketStatus']>, ParentType, ContextType>;
   ticketId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['TicketUserInfo'], ParentType, ContextType>;
+  statuses?: Resolver<Array<ResolversTypes['TicketStatus']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TicketStatusResolvers<ContextType = any, ParentType extends ResolversParentTypes['TicketStatus'] = ResolversParentTypes['TicketStatus']> = {
-  queuePosition?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  statusCode?: Resolver<ResolversTypes['TicketStatusCode'], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  statusCode?: Resolver<ResolversTypes['TicketStatusCode'], ParentType, ContextType>;
+  queuePosition?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TicketUserInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['TicketUserInfo'] = ResolversParentTypes['TicketUserInfo']> = {
-  role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
   userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TicketViewResolvers<ContextType = any, ParentType extends ResolversParentTypes['TicketView'] = ResolversParentTypes['TicketView']> = {
-  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  lastStatus?: Resolver<ResolversTypes['TicketStatus'], ParentType, ContextType>;
   ticketId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['TicketViewUserInfo'], ParentType, ContextType>;
+  lastStatus?: Resolver<ResolversTypes['TicketStatus'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TicketViewUserInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['TicketViewUserInfo'] = ResolversParentTypes['TicketViewUserInfo']> = {
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
-  surname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  surname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['LocalRole'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UpdateResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateResult'] = ResolversParentTypes['UpdateResult']> = {
+  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   errorCode?: Resolver<Maybe<ResolversTypes['ErrorCode']>, ParentType, ContextType>;
   errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   _id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  creationDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   globalRole?: Resolver<Maybe<ResolversTypes['GlobalRole']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  oauthIds?: Resolver<Maybe<ResolversTypes['OauthIds']>, ParentType, ContextType>;
-  surname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  userPreferences?: Resolver<Maybe<ResolversTypes['UserPreferences']>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  surname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  creationDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  userPreferences?: Resolver<Maybe<ResolversTypes['UserPreferences']>, ParentType, ContextType>;
+  oauthIds?: Resolver<Maybe<ResolversTypes['OauthIds']>, ParentType, ContextType>;
   webPushSubscriptions?: Resolver<Array<Maybe<ResolversTypes['WebPushSubscription']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserDeletionResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserDeletionResult'] = ResolversParentTypes['UserDeletionResult']> = {
+  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   errorCode?: Resolver<Maybe<ResolversTypes['ErrorCode']>, ParentType, ContextType>;
   errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['OperationResult'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1302,8 +1302,8 @@ export type UserWhitelistResolvers<ContextType = any, ParentType extends Resolve
 };
 
 export type WebPushKeysResolvers<ContextType = any, ParentType extends ResolversParentTypes['WebPushKeys'] = ResolversParentTypes['WebPushKeys']> = {
-  auth?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   p256dh?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  auth?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1364,9 +1364,9 @@ export type BasicUserInfoDbObject = {
 };
 
 export type NotificationResourceDataDbObject = {
-  createdBy?: Maybe<NotificationUserInfoDbObject>,
   _id?: Maybe<ObjectId>,
   name: string,
+  createdBy?: Maybe<NotificationUserInfoDbObject>,
 };
 
 export type NotificationUserInfoDbObject = {
@@ -1379,55 +1379,55 @@ export type OauthIdsDbObject = {
 };
 
 export type ResourceDbObject = {
-  activeUserCount: number,
-  createdBy?: Maybe<BasicUserInfoDbObject>,
-  creationDate: Date,
-  description?: Maybe<string>,
   _id?: Maybe<ObjectId>,
-  lastModificationDate: Date,
-  maxActiveTickets: number,
   name: string,
+  description?: Maybe<string>,
+  maxActiveTickets: number,
+  creationDate: Date,
+  lastModificationDate: Date,
   tickets: Array<TicketDbObject>,
+  createdBy?: Maybe<BasicUserInfoDbObject>,
+  activeUserCount: number,
 };
 
 export type ResourceNotificationDbObject = {
-  descriptionRef?: Maybe<string>,
   _id?: Maybe<ObjectId>,
+  titleRef?: Maybe<string>,
+  descriptionRef?: Maybe<string>,
+  user: NotificationUserInfoDbObject,
   resource?: Maybe<NotificationResourceDataDbObject>,
   ticketStatus: string,
   timestamp?: Maybe<Date>,
-  titleRef?: Maybe<string>,
-  user: NotificationUserInfoDbObject,
 };
 
 export type TicketDbObject = {
-  creationDate: Date,
-  statuses: Array<TicketStatusDbObject>,
   _id?: Maybe<ObjectId>,
+  creationDate: Date,
   user: TicketUserInfoDbObject,
+  statuses: Array<TicketStatusDbObject>,
 };
 
 export type TicketStatusDbObject = {
-  queuePosition?: Maybe<number>,
-  statusCode: string,
   timestamp: Date,
+  statusCode: string,
+  queuePosition?: Maybe<number>,
 };
 
 export type TicketUserInfoDbObject = {
-  role: string,
   _id?: Maybe<ObjectId>,
   username: string,
+  role: string,
 };
 
 export type UserDbObject = {
   _id?: Maybe<ObjectId>,
-  creationDate?: Maybe<Date>,
   globalRole?: Maybe<string>,
-  name?: Maybe<string>,
-  oauthIds?: Maybe<OauthIdsDbObject>,
-  surname?: Maybe<string>,
-  userPreferences?: Maybe<UserPreferencesDbObject>,
   username: string,
+  name?: Maybe<string>,
+  surname?: Maybe<string>,
+  creationDate?: Maybe<Date>,
+  userPreferences?: Maybe<UserPreferencesDbObject>,
+  oauthIds?: Maybe<OauthIdsDbObject>,
   webPushSubscriptions: Array<Maybe<WebPushSubscription>>,
 };
 
@@ -1439,8 +1439,8 @@ export type UserWhitelistDbObject = {
 };
 
 export type WebPushKeysDbObject = {
-  auth?: Maybe<string>,
   p256dh?: Maybe<string>,
+  auth?: Maybe<string>,
 };
 
 export type WebPushSubscriptionDbObject = {
