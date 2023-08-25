@@ -1,6 +1,6 @@
 query myResources($userId: String) {
   myResources(userId: $userId) {
-    resourceId
+    id
     activeUserCount
     maxActiveTickets
     queuePosition
@@ -57,7 +57,7 @@ mutation requestResource($userId: String, $resourceId: String!, $requestFrom: Re
     errorCode
     errorMessage
     updatedResourceCard {
-      resourceId
+      id
       activeUserCount
       maxActiveTickets
       queuePosition
@@ -112,7 +112,7 @@ mutation releaseResource($userId: String, $resourceId: String!, $requestFrom: Re
     errorCode
     errorMessage
     updatedResourceCard {
-      resourceId
+      id
       activeUserCount
       maxActiveTickets
       queuePosition
@@ -167,7 +167,7 @@ mutation acquireResource($userId: String, $resourceId: String!) {
     errorCode
     errorMessage
     updatedResourceCard {
-      resourceId
+      id
       activeUserCount
       maxActiveTickets
       queuePosition
@@ -222,7 +222,7 @@ mutation cancelResourceAcquire($userId: String, $resourceId: String!) {
     errorCode
     errorMessage
     updatedResourceCard {
-      resourceId
+      id
       activeUserCount
       maxActiveTickets
       queuePosition

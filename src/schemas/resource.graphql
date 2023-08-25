@@ -247,7 +247,7 @@ A subset of the resource information for showing the current status of the resou
 Un subconjunto de la información del recurso para mostrar el estado actual del recurso para el usuario de la sesión
 """
 type ResourceCard {
-  resourceId: String!
+  id: String!
   activeUserCount: Int!
   maxActiveTickets: Int!
   queuePosition: Int
