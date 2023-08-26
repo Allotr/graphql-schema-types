@@ -93,7 +93,7 @@ type UserDeletionResult {
 }
 
 type PublicUser {
-  id: String
+  id: String!
   username: String
   name: String
   surname: String
