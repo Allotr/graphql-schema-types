@@ -189,7 +189,7 @@ type Subscription {
 # Types
 
 type ResourceUpdate {
-  id: String
+  id: String!
   name: String!
   lastModificationDate: Date!
   createdBy: BasicUserInfo
@@ -216,7 +216,7 @@ enum RequestSource {
 }
 
 type ResourceView {
-  id: String
+  id: String!
   name: String!
   description: String
   maxActiveTickets: Int!
@@ -312,7 +312,7 @@ enum OperationResult {
 }
 
 input InputResource {
-  id: String
+  id: String!
   name: String!
   description: String
   maxActiveTickets: Int!
