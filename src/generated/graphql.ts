@@ -88,7 +88,7 @@ export enum GlobalRole {
 }
 
 export type InputResource = {
-  id: Scalars['String'];
+  id?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   maxActiveTickets: Scalars['Int'];
