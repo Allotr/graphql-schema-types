@@ -224,7 +224,6 @@ export type MutationDeleteResourceArgs = {
  */
 export type MutationDeleteUserArgs = {
   userId?: Maybe<Scalars['String']>;
-  userIdToDelete: Scalars['String'];
   deleteAllFlag: Scalars['Boolean'];
 };
 
@@ -364,6 +363,16 @@ export type Query = {
    * Deuelve los detalles de un recurso dado un identificador de recurso
    */
   viewResource?: Maybe<ResourceView>;
+};
+
+
+/**
+ * Query operations for Allotr API
+ *
+ * Operaciones de consulta de la API Allotr
+ */
+export type QueryCurrentUserArgs = {
+  userId?: Maybe<Scalars['String']>;
 };
 
 
@@ -888,14 +897,15 @@ export type SearchUsersQueryVariables = Exact<{
 
 export type SearchUsersQuery = { __typename?: 'Query', searchUsers: Array<{ __typename?: 'PublicUser', id: string, username?: Maybe<string>, name?: Maybe<string>, surname?: Maybe<string> }> };
 
-export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
+export type CurrentUserQueryVariables = Exact<{
+  userId?: Maybe<Scalars['String']>;
+}>;
 
 
 export type CurrentUserQuery = { __typename?: 'Query', currentUser?: Maybe<{ __typename?: 'User', _id?: Maybe<string>, username: string, globalRole?: Maybe<GlobalRole>, name?: Maybe<string>, surname?: Maybe<string>, creationDate?: Maybe<Date> }> };
 
 export type DeleteUserMutationVariables = Exact<{
   userId?: Maybe<Scalars['String']>;
-  userIdToDelete: Scalars['String'];
   deleteAllFlag: Scalars['Boolean'];
 }>;
 
@@ -1118,7 +1128,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   cancelResourceAcquire?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationCancelResourceAcquireArgs, 'resourceId'>>;
   createResource?: Resolver<ResolversTypes['CreationResult'], ParentType, ContextType, RequireFields<MutationCreateResourceArgs, 'resource'>>;
   deleteResource?: Resolver<ResolversTypes['DeletionResult'], ParentType, ContextType, RequireFields<MutationDeleteResourceArgs, 'resourceId'>>;
-  deleteUser?: Resolver<Maybe<ResolversTypes['UserDeletionResult']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'userIdToDelete' | 'deleteAllFlag'>>;
+  deleteUser?: Resolver<Maybe<ResolversTypes['UserDeletionResult']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'deleteAllFlag'>>;
   releaseResource?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationReleaseResourceArgs, 'resourceId' | 'requestFrom'>>;
   requestResource?: Resolver<ResolversTypes['ResourceManagementResult'], ParentType, ContextType, RequireFields<MutationRequestResourceArgs, 'resourceId' | 'requestFrom'>>;
   updateResource?: Resolver<ResolversTypes['UpdateResult'], ParentType, ContextType, RequireFields<MutationUpdateResourceArgs, 'resource'>>;
@@ -1154,7 +1164,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   _sdlNotification?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   _sdlResource?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   _sdlUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryCurrentUserArgs, never>>;
   myNotificationData?: Resolver<Array<ResolversTypes['ResourceNotification']>, ParentType, ContextType, RequireFields<QueryMyNotificationDataArgs, never>>;
   myResources?: Resolver<Array<ResolversTypes['ResourceCard']>, ParentType, ContextType, RequireFields<QueryMyResourcesArgs, never>>;
   searchUsers?: Resolver<Array<ResolversTypes['PublicUser']>, ParentType, ContextType, RequireFields<QuerySearchUsersArgs, never>>;
@@ -1870,8 +1880,8 @@ export const SearchUsers = gql`
 }
     `;
 export const CurrentUser = gql`
-    query currentUser {
-  currentUser {
+    query currentUser($userId: String) {
+  currentUser(userId: $userId) {
     _id
     username
     globalRole
@@ -1883,12 +1893,8 @@ export const CurrentUser = gql`
 }
     `;
 export const DeleteUser = gql`
-    mutation deleteUser($userId: String, $userIdToDelete: String!, $deleteAllFlag: Boolean!) {
-  deleteUser(
-    userId: $userId
-    userIdToDelete: $userIdToDelete
-    deleteAllFlag: $deleteAllFlag
-  ) {
+    mutation deleteUser($userId: String, $deleteAllFlag: Boolean!) {
+  deleteUser(userId: $userId, deleteAllFlag: $deleteAllFlag) {
     status
     errorCode
     errorMessage

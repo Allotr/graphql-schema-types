@@ -1,6 +1,6 @@
 {
   "name": "allotr-graphql-schema-types",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "",
   "main": "./lib/generated/graphql.js",
   "types": "./lib/generated/graphql.d.ts",
@@ -18,11 +18,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@graphql-codegen/typescript-mongodb": "2.1.2",
-    "@types/react": "^17.0.19",
+    "@graphql-codegen/typescript-mongodb": "2.4.6",
+    "@types/react": "^18.2.21",
     "graphql": "^15.8.0",
     "graphql-tag": "^2.0.0",
-    "mongodb": "^4.1.0"
+    "mongodb": "^4.17.1"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^3.1.0",
