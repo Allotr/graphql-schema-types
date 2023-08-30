@@ -38,7 +38,12 @@ type Query {
 
   Devuelve el usuario de la sesión actual
   """
-  currentUser: User
+  currentUser(
+    """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+  ): User
   """
   Searches for users given a username, name or surname
 
@@ -75,10 +80,6 @@ type Mutation {
     Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
     """
     userId: String
-    """
-    ID of the user to be deleted // ID del usuario a borrar
-    """
-    userIdToDelete: String!,
     """
     Flag for deleting all user resources instead of only removing those without secondary administrator // Flag para borrar todos los recursos del usuario en vez de sólo borrar los que no tienen administrador secundario
     """

@@ -7,8 +7,8 @@ query searchUsers($query: String) {
   }
 }
 
-query currentUser {
-  currentUser {
+query currentUser($userId: String) {
+  currentUser(userId: $userId) {
     _id
     username
     globalRole
@@ -19,8 +19,8 @@ query currentUser {
   }
 }
 
-mutation deleteUser($userId: String, $userIdToDelete: String!, $deleteAllFlag: Boolean!) {
-  deleteUser(userId: $userId, userIdToDelete: $userIdToDelete, deleteAllFlag: $deleteAllFlag) {
+mutation deleteUser($userId: String, $deleteAllFlag: Boolean!) {
+  deleteUser(userId: $userId, deleteAllFlag: $deleteAllFlag) {
     status
     errorCode
     errorMessage
