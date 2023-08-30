@@ -94,7 +94,7 @@ type Query {
 
   Devuelve el esquema para GraphQL stitching
   """
-  _sdl: String!
+  _sdlNotification: String!
 }
 
 type Subscription {

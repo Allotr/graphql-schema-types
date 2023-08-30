@@ -321,7 +321,19 @@ export type Query = {
    *
    * Devuelve el esquema para GraphQL stitching
    */
-  _sdl: Scalars['String'];
+  _sdlNotification: Scalars['String'];
+  /**
+   * Returns the schema for GraphQL stitching
+   *
+   * Devuelve el esquema para GraphQL stitching
+   */
+  _sdlResource: Scalars['String'];
+  /**
+   * Returns the schema for GraphQL stitching
+   *
+   * Devuelve el esquema para GraphQL stitching
+   */
+  _sdlUser: Scalars['String'];
   /**
    * Returns the current logged in user
    *
@@ -1139,7 +1151,9 @@ export type PublicUserResolvers<ContextType = any, ParentType extends ResolversP
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  _sdl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  _sdlNotification?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  _sdlResource?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  _sdlUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   myNotificationData?: Resolver<Array<ResolversTypes['ResourceNotification']>, ParentType, ContextType, RequireFields<QueryMyNotificationDataArgs, never>>;
   myResources?: Resolver<Array<ResolversTypes['ResourceCard']>, ParentType, ContextType, RequireFields<QueryMyResourcesArgs, never>>;

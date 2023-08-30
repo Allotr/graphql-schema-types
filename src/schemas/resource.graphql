@@ -37,7 +37,7 @@ type Query {
 
   Devuelve el esquema para GraphQL stitching
   """
-  _sdl: String!
+  _sdlResource: String!
 }
 
 type Mutation {
