@@ -1,4 +1,34 @@
 """
+Custom scalar for dates
+
+Escalar personalizado para fechas
+"""
+scalar Date
+
+"""
+Error codes enumeration
+
+Enumerador de códigos de error
+"""
+enum ErrorCode {
+  BAD_DATA
+  BAD_CONNECTION
+  BAD_TRANSACTION
+  DATA_CHANGED_REFRESH
+}
+
+"""
+Operation result enumerator used for all mutations to return the operation outcome
+
+Enumerador de resultados de operación usado con todas las mutaciones para devolver el estado de ésta
+"""
+enum OperationResult {
+  OK
+  ERROR
+}
+
+
+"""
 MongoDB/GraphQL UserWhitelist model
 
 Modelo de Whitelist de Usuarios de MongoDB/GraphQL

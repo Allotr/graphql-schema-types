@@ -1,10 +1,22 @@
+"""
+Custom scalar for dates
+
+Escalar personalizado para fechas
+"""
+scalar Date
+
 type Query {
   """
   Returns the resources shared with /created by the logged-in user
 
   Devuelve los recursos compartidos con o creados por el usuario de la sesión
   """
-  myResources: [ResourceCard!]!
+  myResources(
+    """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+  ): [ResourceCard!]!
   """
   Returns the details of a resource given a resource ID
 
@@ -12,10 +24,20 @@ type Query {
   """
   viewResource(
     """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+    """
     Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
     """
     resourceId: String!
   ): ResourceView
+  """
+  Returns the schema for GraphQL stitching
+
+  Devuelve el esquema para GraphQL stitching
+  """
+  _sdl: String!
 }
 
 type Mutation {
@@ -25,6 +47,10 @@ type Mutation {
   Crea un recurso y devuelve el resultado de la ejecución
   """
   createResource(
+    """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
     """
     Data to create a resource // Datos para crear un recurso
     """
@@ -37,6 +63,10 @@ type Mutation {
   """
   updateResource(
     """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+    """
     Data to update a resource // Datos para actualizar un recurso
     """
     resource: InputResource!
@@ -48,6 +78,10 @@ type Mutation {
   """
   deleteResource(
     """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+    """
     Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
     """
     resourceId: String!
@@ -58,6 +92,10 @@ type Mutation {
   Solicita un recurso para ser usado y devuelve el resultado de la ejecución
   """
   requestResource(
+    """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
     """
     Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
     """
@@ -74,6 +112,10 @@ type Mutation {
   """
   releaseResource(
     """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+    """
     Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
     """
     resourceId: String!
@@ -89,6 +131,10 @@ type Mutation {
   """
   acquireResource(
     """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+    """
     Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
     """
     resourceId: String!
@@ -99,6 +145,10 @@ type Mutation {
   Cancela la obtención de un recurso cuando llega el turno del usuario para usar el recurso y devuelve el resultado de la ejecución
   """
   cancelResourceAcquire(
+    """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
     """
     Stringified ObjectId ID of the resource // Identificador de tipo ObjectId pasado a string del recurso
     """
@@ -117,13 +167,23 @@ type Subscription {
 
   Se suscribe a actualizaciones de recursos creados por/compartidos con el usuario de la sesión
   """
-  newResourceReady: ResourceUpdate
+  newResourceReady(
+    """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+  ): ResourceUpdate
   """
   Subscribes to resources creations that are created by/shared with the logged in user
 
   Se suscribe a creaciones de recursos que sean creados por/compartidos con el usuario de la sesión
   """
-  newResourceCreated: ResourceCard
+  newResourceCreated(
+    """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+  ): ResourceCard
 }
 
 # Types
@@ -187,7 +247,7 @@ A subset of the resource information for showing the current status of the resou
 Un subconjunto de la información del recurso para mostrar el estado actual del recurso para el usuario de la sesión
 """
 type ResourceCard {
-  resourceId: String!
+  id: String!
   activeUserCount: Int!
   maxActiveTickets: Int!
   queuePosition: Int

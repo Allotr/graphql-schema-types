@@ -19,8 +19,8 @@ query currentUser {
   }
 }
 
-mutation deleteUser($userId: String!, $deleteAllFlag: Boolean!) {
-  deleteUser(userId: $userId, deleteAllFlag: $deleteAllFlag) {
+mutation deleteUser($userId: String, $userIdToDelete: String!, $deleteAllFlag: Boolean!) {
+  deleteUser(userId: $userId, userIdToDelete: $userIdToDelete, deleteAllFlag: $deleteAllFlag) {
     status
     errorCode
     errorMessage

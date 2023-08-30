@@ -1,10 +1,100 @@
+"""
+Custom scalar for dates
+
+Escalar personalizado para fechas
+"""
+scalar Date
+
+"""
+Error codes enumeration
+
+Enumerador de códigos de error
+"""
+enum ErrorCode {
+  BAD_DATA
+  BAD_CONNECTION
+  BAD_TRANSACTION
+  DATA_CHANGED_REFRESH
+}
+
+"""
+Ticket status code enumeration representing the state machine
+
+Enumeración de códigos de estado del ticket
+"""
+enum TicketStatusCode {
+  """
+  The user was just added to the resource. This is the initial state
+
+  El usuario fue añadido al recurso. Es el estado inicial
+  """
+  INITIALIZED
+  """
+  The user wants to use the resource
+
+  El usuario quiere usar el recurso
+  """
+  REQUESTING
+  """
+  The user entered the queue because there were no available slots
+
+  El usuario entró a la cola porque no había puestos libres
+  """
+  QUEUED
+  """
+  The user queued can finally use the resource and has to confirm that still wants to use it
+
+  El usuario encolado ya puede usar el recurso y tiene que confirmar si sigue queriendo usarlo
+  """
+  AWAITING_CONFIRMATION
+  """
+  The user is using the resource
+
+  El usuario está usando el recurso
+  """
+  ACTIVE
+  """
+  The user has stopped using the resource
+
+  El usuario ha dejado de usar el recurso
+  """
+  INACTIVE
+  """
+  The user was banned or invalidated for some reason (FUTURE PROOFING, NOT IN USE)
+
+  El usuario ha sido prohibido o invalidado por alguna razón (PREVISIÓN DE FUTUROS REQUISITOS, NO SE USA)
+  """
+  REVOKED
+}
+
+"""
+Operation result enumerator used for all mutations to return the operation outcome
+
+Enumerador de resultados de operación usado con todas las mutaciones para devolver el estado de ésta
+"""
+enum OperationResult {
+  OK
+  ERROR
+}
+
 type Query {
   """
   Returns the notifications for the logged in user
 
   Deuelve las notificaciones del usuario de la sesión
   """
-  myNotificationData: [ResourceNotification!]!
+  myNotificationData(
+    """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+  ): [ResourceNotification!]!
+  """
+  Returns the schema for GraphQL stitching
+
+  Devuelve el esquema para GraphQL stitching
+  """
+  _sdl: String!
 }
 
 type Subscription {
@@ -13,7 +103,12 @@ type Subscription {
 
   Se suscribe a actualizaciones de notificaciones para el usuario de la sesión
   """
-  myNotificationDataSub: [ResourceNotification!]!
+  myNotificationDataSub(
+    """
+    Stringified ObjectId ID of the user // Identificador de tipo ObjectId pasado a string del usuario
+    """
+    userId: String
+  ): [ResourceNotification!]!
 }
 
 """
